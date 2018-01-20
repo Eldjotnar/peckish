@@ -1,5 +1,4 @@
 import React from 'react';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View, Dimensions, Text, TouchableOpacity } from 'react-native';
 import {StackNavigator} from 'react-navigation'

@@ -8,6 +8,7 @@ var {width, height} = Dimensions.get('window');
 
 import { IngredientButton } from '../components/IngredientButton';
 import { BottomBar } from '../components/BottomBar';
+import { TopBar } from '../components/TopBar';
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -24,6 +25,10 @@ export default class IngredientPicker extends React.Component {
     this._loadAssetsAsync();
   }
 
+  componentDoesMount() {
+    console.log(Platform.OS);
+  }
+
   _loadAssetsAsync = async () => {
     await Font.loadAsync({
       multicolore: require('../assets/fonts/Multicolore.otf'),
@@ -36,6 +41,14 @@ export default class IngredientPicker extends React.Component {
       title={item.key}
     />
   );
+
+  _leftAction = () => {
+    console.log("left button pressed");
+  }
+
+  _rightAction = () => {
+    console.log("right button pressed");
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -50,10 +63,15 @@ export default class IngredientPicker extends React.Component {
       <View style={styles.main}>
         <StatusBar
           barStyle="light-content"
-          translucent={true}
+          translucent={false}
         />
         <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
-        <Text style={styles.titleText}>select ingredients</Text>
+        {/*<Text style={styles.titleText}>select ingredients</Text>*/}
+        <TopBar title="select ingredients"
+          leftIcon="ios-menu"
+          leftAction={this._leftAction}
+          rightIcon="ios-search"
+          rightAction={this._rightAction} />
         <FlatList
           data={[{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'a nice handlebar mustache'}, {key: 'pickles'}, {key: 'toast'}]}
           numColumns={2}
