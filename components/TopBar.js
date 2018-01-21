@@ -1,8 +1,12 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
+<<<<<<< Updated upstream
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 var {width, height} = Dimensions.get('window');
+=======
+import { StyleSheet, Text, View, Dimensions, Platform, Image, FlatList, TouchableOpacity, StatusBar } from 'react-native';
+>>>>>>> Stashed changes
 
 export class TopBar extends React. Component {
   constructor(props){

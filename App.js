@@ -7,8 +7,8 @@ import RecipePicker from './screens/RecipePicker';
 
 const Navi = StackNavigator({
   IP: {screen: IngredientPicker},
-  RP: {screen: RecipePicker},
   TS: {screen: Test},
+  RP: {screen: RecipePicker},
 });
 
 export default class App extends React.Component {

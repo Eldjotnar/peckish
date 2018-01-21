@@ -32,6 +32,10 @@ export default class IngredientPicker extends React.Component {
     this.setState({ loaded: true });
   };
 
+  _testFunction = () => {
+    console.log("i printed ya");
+  }
+
   _renderItem = ({item}) => (
     <IngredientButton
       title={item.key}
@@ -73,7 +77,12 @@ export default class IngredientPicker extends React.Component {
           contentContainerStyle={styles.listContainer}
           renderItem={this._renderItem}
         />
-        <BottomBar/>
+        <BottomBar
+          icon1="ios-basket-outline" active1={true} action1={""}
+          icon2="ios-archive-outline" active2={false} action2={() => navigate('RP', {})}
+          icon3="ios-barcode-outline" active3={false} action3={() => navigate('TS', {})}
+          icon4="ios-contact-outline" active4={false} action4={() => navigate('TS', {})}
+          />
       </View>
     );
   }
