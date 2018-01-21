@@ -8,6 +8,7 @@ var {width, height} = Dimensions.get('window');
 
 import { IngredientButton } from '../components/IngredientButton';
 import { BottomBar } from '../components/BottomBar';
+import { TopBar } from '../components/TopBar';
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -37,6 +38,14 @@ export default class IngredientPicker extends React.Component {
     />
   );
 
+  _leftAction = () => {
+    console.log("left button pressed");
+  }
+
+  _rightAction = () => {
+    console.log("right button pressed");
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     if(!this.state.loaded){
@@ -50,10 +59,14 @@ export default class IngredientPicker extends React.Component {
       <View style={styles.main}>
         <StatusBar
           barStyle="light-content"
-          translucent={true}
+          translucent={false}
         />
         <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
-        <Text style={styles.titleText}>select ingredients</Text>
+        <TopBar title="select ingredients"
+          leftIcon="ios-menu"
+          leftAction={this._leftAction}
+          rightIcon="ios-search"
+          rightAction={this._rightAction} />
         <FlatList
           data={[{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'a nice handlebar mustache'}, {key: 'pickles'}, {key: 'toast'}]}
           numColumns={2}
@@ -77,24 +90,6 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     height: '60%',
-  },
-  titleText: {
-    fontFamily: 'multicolore',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginTop: 30,
-    color: 'white',
-    backgroundColor: 'transparent',
-    fontSize: 16,
-  },
-  fancyText: {
-    fontFamily: 'multicolore',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginTop: 50,
-    fontSize: 20,
-    color: 'white',
-    backgroundColor: 'transparent',
   },
   listContainer: {
     margin:10,
