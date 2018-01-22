@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     borderRadius: 5,
     flexDirection: 'row',
-    marginBottom: Platform.OS === 'ios' ? 10 : 20
+    marginBottom: 30
   },
   recipeImageContainer: {
     height: '100%',
@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     width: null,
     height: null,
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
     flex: 1,
   },
   recipeTextContainer: {
@@ -65,16 +67,18 @@ const styles = StyleSheet.create({
   },
   recipeTitle: {
     fontFamily: 'comfortaaBold',
-    paddingBottom: 5,
-    fontSize: 16,
+    paddingBottom: 2,
+    fontSize: 14,
   },
   recipeDescription: {
     fontFamily: 'comfortaa',
     color: '#636e8e',
+    fontSize: 12,
   },
   recipeIngredientsMissing: {
     fontFamily: 'comfortaa',
     position:'absolute',
+    fontSize: 12,
     bottom: 5,
     left: 5,
   },
