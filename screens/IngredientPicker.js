@@ -1,14 +1,20 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-
 import { AppLoading, Font } from 'expo';
-import { StyleSheet, Text, View, Dimensions, Platform, Image, FlatList, TouchableHighlight, StatusBar } from 'react-native';
-
-var {width, height} = Dimensions.get('window');
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Platform,
+  Image,
+  FlatList,
+  StatusBar
+} from 'react-native';
 
 import { IngredientButton } from '../components/IngredientButton';
-import { BottomBar } from '../components/BottomBar';
 import { TopBar } from '../components/TopBar';
+var {width, height} = Dimensions.get('window');
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -77,12 +83,6 @@ export default class IngredientPicker extends React.Component {
           contentContainerStyle={styles.listContainer}
           renderItem={this._renderItem}
         />
-        <BottomBar
-          icon1="ios-basket-outline" active1={true} action1={""}
-          icon2="ios-archive-outline" active2={false} action2={() => navigate('RP', {})}
-          icon3="ios-barcode-outline" active3={false} action3={() => navigate('TS', {})}
-          icon4="ios-contact-outline" active4={false} action4={() => navigate('TS', {})}
-          />
       </View>
     );
   }

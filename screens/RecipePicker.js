@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-import {Image, StyleSheet, Text, View, Dimensions, StatusBar, TouchableOpacity, FlatList} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  StatusBar,
+  TouchableOpacity,
+  FlatList
+} from 'react-native';
 import {StackNavigator} from 'react-navigation'
 
 import { TopBar } from '../components/TopBar';
@@ -16,7 +25,7 @@ export default class RecipePicker extends React.Component {
       data: [
          {
             "imagePath":"../components/macandcheese.jpg",
-            "title":"Macaroni and Cheese",
+            "title":"Macaroni and Cheese and jelly nad juice and pickles",
             "source":"BudgetBytes",
             "missing":"0",
             "id":"000"
@@ -83,6 +92,12 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
+      {/*<BottomBar
+          icon1="ios-basket-outline" active1={false} action1={() => navigate('IP', {})}
+          icon2="ios-archive-outline" active2={true} action2={null}
+          icon3="ios-barcode-outline" active3={false} action3={() => navigate('TS', {})}
+          icon4="ios-contact-outline" active4={false} action4={() => navigate('TS', {})}
+          />*/}
       </View>
     );
   }
