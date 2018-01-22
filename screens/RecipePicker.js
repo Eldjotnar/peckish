@@ -3,6 +3,7 @@ import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import {Image, StyleSheet, Text, View, Dimensions, StatusBar, TouchableOpacity, FlatList} from 'react-native';
 import {StackNavigator} from 'react-navigation'
+import { Button } from 'react-native';
 
 import { TopBar } from '../components/TopBar';
 import { RecipeCard } from '../components/RecipeCard';
@@ -60,6 +61,23 @@ export default class RecipePicker extends React.Component {
     />
   );
 
+  _getRecipes() {
+    fetch("http://rns203-8.cs.stolaf.edu:28488", {
+      method: "POST",
+      body: JSON.stringify({
+                  "imagePath":"../components/macandcheese.jpg",
+                  "title":"Macaroni and Cheese",
+                  "source":"BudgetBytes",
+                  "missing":"0",
+                  "id":"000"
+               }),
+      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+    })
+    .then(
+      console.log("Talked to server")
+    )
+  }
+
   static navigationOptions = {
     header: null
   }
@@ -88,6 +106,13 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
+        <View>
+          <Button
+            title = "Try Getting Recipes"
+            color = "gray"
+            onPress = {this._getRecipes}
+          />
+        </View>
       </View>
     );
   }
