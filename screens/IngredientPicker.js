@@ -1,5 +1,6 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator} from 'react-navigation';
+import { Button } from 'react-native';
 import { AppLoading, Font } from 'expo';
 import {
   StyleSheet,
@@ -56,6 +57,13 @@ export default class IngredientPicker extends React.Component {
     console.log("right button pressed");
   }
 
+  _getRecipes() {
+    fetch("http://rns203-8.cs.stolaf.edu:28488")
+    .then(
+      console.log("Talked to server")
+    )
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     if(!this.state.loaded){
@@ -83,6 +91,13 @@ export default class IngredientPicker extends React.Component {
           contentContainerStyle={styles.listContainer}
           renderItem={this._renderItem}
         />
+        <View>
+          <Button
+            title = "Try Getting Recipes"
+            color = "gray"
+            onPress = {this._getRecipes}
+          />
+        </View>
       </View>
     );
   }
