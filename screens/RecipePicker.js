@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-import {Image, StyleSheet, Text, View, Dimensions, StatusBar, TouchableOpacity, FlatList} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  StatusBar,
+  TouchableOpacity,
+  FlatList,
+  Button,
+} from 'react-native';
 import {StackNavigator} from 'react-navigation'
 
 import { TopBar } from '../components/TopBar';
@@ -57,8 +67,15 @@ export default class RecipePicker extends React.Component {
       imagePath={require("../assets/images/pizza.jpg")}
       source={item.source}
       missing={item.missing}
+      recipeAction={this._myTestFunction}
     />
   );
+
+  _myTestFunction = () => {
+    const { navigate } = this.props.navigation;
+    navigate('Recipe');
+    console.log("test");
+  }
 
   static navigationOptions = {
     header: null

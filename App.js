@@ -6,6 +6,12 @@ import { Platform } from 'react-native';
 import IngredientPicker from './screens/IngredientPicker';
 import Test from './screens/Test';
 import RecipePicker from './screens/RecipePicker';
+import Recipe from './screens/Recipe';
+
+const stackNavi = StackNavigator({
+  RecipePicker: { screen: RecipePicker },
+  Recipe: { screen: Recipe },
+})
 
 const Tabs = TabNavigator({
   IngredientPicker: {
@@ -21,7 +27,7 @@ const Tabs = TabNavigator({
     },
   },
   RecipePicker: {
-    screen: RecipePicker,
+    screen: stackNavi,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
@@ -45,7 +51,7 @@ const Tabs = TabNavigator({
     },
   },
   Profile: {
-    screen: Test,
+    screen: Recipe,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
@@ -75,6 +81,7 @@ const Tabs = TabNavigator({
       backgroundColor: '#d03d67'
     },
   },
+  backBehavior: 'none',
 });
 
 export default class App extends React.Component {

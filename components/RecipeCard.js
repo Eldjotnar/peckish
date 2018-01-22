@@ -9,7 +9,7 @@ import {
   Image,
   Platform
 } from 'react-native';
-
+import {withNavigation} from 'react-navigation';
 var {width, height} = Dimensions.get('window');
 
 export class RecipeCard extends React.PureComponent {
@@ -28,7 +28,7 @@ export class RecipeCard extends React.PureComponent {
           <Text numberOfLines={1} style={styles.recipeDescription}>{this.props.source}</Text>
           <Text style={styles.recipeIngredientsMissing}>Ingredients missing: {this.props.missing}</Text>
         </View>
-        <TouchableOpacity style={styles.arrowContainer}>
+        <TouchableOpacity style={styles.arrowContainer} onPress={this.props.recipeAction}>
           <Ionicons name="ios-arrow-forward" size={30}/>
         </TouchableOpacity>
       </View>
