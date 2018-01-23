@@ -66,7 +66,7 @@ export default class RecipePicker extends React.Component {
       method: "POST",
       body: JSON.stringify({
                   type:"ingredients",
-                  ingredients:["macaroni","cheese","milk","eggs"],
+                  ingredients:["macaroni","cheese","milk","eggs", "potatoes"],
                }),
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
