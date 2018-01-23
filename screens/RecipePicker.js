@@ -65,11 +65,11 @@ export default class RecipePicker extends React.Component {
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
       method: "POST",
       body: JSON.stringify({
-                  "imagePath":"../components/macandcheese.jpg",
-                  "title":"Macaroni and Cheese",
-                  "source":"BudgetBytes",
-                  "missing":"0",
-                  "id":"000"
+                  type:"ingredients",
+                  a:"cheese",
+                  b:"macaroni",
+                  c:"milk",
+                  d:"butter"
                }),
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
