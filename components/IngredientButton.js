@@ -6,9 +6,11 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity } from 'react-native';
+  TouchableOpacity
+} from 'react-native';
 
 var {width, height} = Dimensions.get('window');
+var numSelected = 0;
 
 export class IngredientButton extends React.PureComponent {
   constructor(props) {
@@ -31,8 +33,14 @@ export class IngredientButton extends React.PureComponent {
   };
 
   _onPress = () => {
-    console.log("pressed ");
-    this.state.buttonColor == '#36363660' ? this.setState({ buttonColor: '#d03d67' }) : this.setState({ buttonColor: '#36363660' });
+    if(this.state.buttonColor == '#36363660'){
+      this.setState({ buttonColor: '#d03d67' });
+      numSelected++;
+    } else {
+      this.setState({ buttonColor: '#36363660' });
+      numSelected--;
+    }
+    this.props.callbackFromParent(numSelected);
   }
 
   render() {

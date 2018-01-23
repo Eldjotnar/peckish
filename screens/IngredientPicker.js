@@ -1,6 +1,7 @@
 import React from 'react';
 import { StackNavigator} from 'react-navigation';
 import { AppLoading, Font } from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 import {
   StyleSheet,
   Text,
@@ -9,18 +10,55 @@ import {
   Platform,
   Image,
   FlatList,
-  StatusBar
+  StatusBar,
+  TextInput,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableOpacity,
+  Animated,
+  Easing,
 } from 'react-native';
 
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
 var {width, height} = Dimensions.get('window');
+var numSelected = 0; //number of ingredients the user selected
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
+      textSearchHeight: 0,
+      data: [
+        {key: 'elbow macaroni'},
+        {key: 'butter'},
+        {key: 'dijon mustard'},
+        {key: 'cayenne pepper'},
+        {key: 'shredded sharp cheddar'},
+        {key: 'flour'},
+        {key: 'tomatoes'},
+        {key: 'dry yeast'},
+        {key: 'mozarella'},
+        {key: 'basil'},
+        {key: 'oregano'},
+        {key: 'white onions'},
+        {key: 'garlic'},
+        {key: 'pepperoni'},
+        {key: 'mushrooms'},
+        {key: 'tomato sauce'},
+        {key: 'mango'},
+        {key: 'apples'},
+        {key: 'rice'},
+        {key: 'sausages'},
+        {key: 'bell peppers'},
+        {key: 'arugala'},
+        {key: 'bamboo shoots'},
+        {key: 'cauliflower'},
+        {key: 'camerbert'},
+        {key: 'bacon'},
+        {key: 'ricotta'},
+      ]
     }
   }
   static navigationOptions = {
@@ -29,6 +67,7 @@ export default class IngredientPicker extends React.Component {
 
   componentWillMount() {
     this._loadAssetsAsync();
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
 
   _loadAssetsAsync = async () => {
@@ -42,9 +81,25 @@ export default class IngredientPicker extends React.Component {
     console.log("i printed ya");
   }
 
+  _keyboardDidHide = () => {
+    //alert('Keyboard Hidden');
+    this.setState({
+      textSearchHeight: 0,
+    })
+  }
+
+  _getNumButtonsPressed = (numButtonsPressed) => {
+    numSelected = numButtonsPressed; //this takes the numPressed from IngredientButton and passes it to the global variable here
+    if(numSelected >= 4){
+      console.log("find recipes!");
+    }
+    //console.log("ingredient picker found " + numButtonsPressed);
+  }
+
   _renderItem = ({item}) => (
     <IngredientButton
       title={item.key}
+      callbackFromParent={this._getNumButtonsPressed}
     />
   );
 
@@ -53,18 +108,17 @@ export default class IngredientPicker extends React.Component {
   }
 
   _rightAction = () => {
-    console.log("right button pressed");
+    this.refs.searchBar.focus();
+    this.setState({
+      textSearchHeight: 50,
+    })
   }
 
 
   render() {
     const { navigate } = this.props.navigation;
     if(!this.state.loaded){
-      return (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      )
+      return <Image source={require('../assets/images/splash_screen.png')} style={{resizeMode:'cover', position:'absolute', top:0, left:0}} />
     }
     return (
       <View style={styles.main}>
@@ -79,11 +133,23 @@ export default class IngredientPicker extends React.Component {
           rightIcon="ios-search"
           rightAction={this._rightAction} />
         <FlatList
-          data={[{key: 'a'}, {key: 'b'}, {key: 'c'}, {key: 'a nice handlebar mustache'}, {key: 'pickles'}, {key: 'toast'}]}
+          data={this.state.data}
           numColumns={2}
           contentContainerStyle={styles.listContainer}
           renderItem={this._renderItem}
         />
+        <KeyboardAvoidingView behavior="padding">
+          <TextInput
+            style={[styles.textInput, {height: this.state.textSearchHeight}]}
+            onSubmitEditing={this._keyboardDidHide}
+            ref='searchBar' />
+        </KeyboardAvoidingView>
+        <Animated.View style={ styles.popup }>
+          <Text style={styles.popupText}>Find recipes!</Text>
+          <TouchableOpacity>
+            <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
+          </TouchableOpacity>
+        </Animated.View>
       </View>
     );
   }
@@ -105,5 +171,31 @@ const styles = StyleSheet.create({
     margin:10,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 50,
+  },
+  textInput: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    fontFamily: 'multicolore',
+    justifyContent: 'center',
+    paddingLeft: width/20,
+    fontSize: 16,
+  },
+  popup: {
+    height: 70,
+    backgroundColor: '#d03d67',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  popupText: {
+    fontFamily: 'multicolore',
+    fontSize: 18,
+    color: 'white',
+  },
+  popIcons: {
+    color: 'white',
+    marginLeft: 20,
   }
 });
