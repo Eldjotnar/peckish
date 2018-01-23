@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import {StackNavigator} from 'react-navigation';
 import {
   Image,
   StyleSheet,
@@ -12,8 +13,6 @@ import {
   FlatList,
   Button,
 } from 'react-native';
-import {StackNavigator} from 'react-navigation'
-import { Button } from 'react-native';
 
 import { TopBar } from '../components/TopBar';
 import { RecipeCard } from '../components/RecipeCard';
@@ -27,17 +26,17 @@ export default class RecipePicker extends React.Component {
       data: [
          {
             "imagePath":"../components/macandcheese.jpg",
-            "title":"Macaroni and Cheese",
-            "source":"BudgetBytes",
-            "missing":"0",
-            "id":"000"
+            "title":"Pizza I promise",
+            "source":"Food Network",
+            "missing":"1",
+            "id":"000",
          },
          {
             "imagePath":"require('../components/macandcheese.jpg')",
             "title":"Macaroni and Cheese",
             "source":"BudgetBytes",
             "missing":"0",
-            "id":"001"
+            "id":"001",
          }
       ],
     };
@@ -68,9 +67,19 @@ export default class RecipePicker extends React.Component {
       imagePath={require("../assets/images/pizza.jpg")}
       source={item.source}
       missing={item.missing}
-      recipeAction={this._myTestFunction}
+      recipeAction={() => this._generateRecipePage({item})}
     />
   );
+
+  _generateRecipePage = ({item}) => {
+    const { navigate } = this.props.navigation;
+    navigate(
+      'Recipe', {
+        name: item.title,
+        source: item.source,
+      },
+    );
+  }
 
   _getRecipes() {
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
