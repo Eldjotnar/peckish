@@ -85,7 +85,7 @@ export default class RecipePicker extends React.Component {
   _obtainRecipes() {
   fetch("http://rns203-8.cs.stolaf.edu:28488")
   .then((res) => {
-  return res.json()
+    return res.json()
   })
   .then((data) => {
   console.log(data)
@@ -109,6 +109,9 @@ export default class RecipePicker extends React.Component {
     )
     .then(
       _obtainRecipes()
+    )
+    .then(
+      console.log("Obtained recipes")
     )
   }
 
