@@ -27,9 +27,11 @@ var numSelected = 0; //number of ingredients the user selected
 export default class IngredientPicker extends React.Component {
   constructor(props) {
     super(props);
+    this.animatedValue = new Animated.Value(0);
     this.state = {
       loaded: false,
       textSearchHeight: 0,
+      showPopup: 'none',
       data: [
         {key: 'elbow macaroni'},
         {key: 'butter'},
@@ -70,6 +72,19 @@ export default class IngredientPicker extends React.Component {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
 
+  animate (easing) {
+    this.setState({showPopup: 'flex'});
+    this.animatedValue.setValue(0)
+      Animated.timing(
+        this.animatedValue,
+        {
+          toValue: 1,
+          duration: 400,
+          easing
+        }
+    ).start()
+  }
+
   _loadAssetsAsync = async () => {
     await Font.loadAsync({
       multicolore: require('../assets/fonts/Multicolore.otf'),
@@ -77,12 +92,7 @@ export default class IngredientPicker extends React.Component {
     this.setState({ loaded: true });
   };
 
-  _testFunction = () => {
-    console.log("i printed ya");
-  }
-
   _keyboardDidHide = () => {
-    //alert('Keyboard Hidden');
     this.setState({
       textSearchHeight: 0,
     })
@@ -90,10 +100,10 @@ export default class IngredientPicker extends React.Component {
 
   _getNumButtonsPressed = (numButtonsPressed) => {
     numSelected = numButtonsPressed; //this takes the numPressed from IngredientButton and passes it to the global variable here
-    if(numSelected >= 4){
-      console.log("find recipes!");
+    if(numSelected >= 4 && this.state.showPopup != 'flex'){
+      this.setState({showPopup: 'flex'});
+      this.animate(Easing.ease);
     }
-    //console.log("ingredient picker found " + numButtonsPressed);
   }
 
   _renderItem = ({item}) => (
@@ -117,6 +127,10 @@ export default class IngredientPicker extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const spin = this.animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-width, 0]
+    })
     if(!this.state.loaded){
       return <Image source={require('../assets/images/splash_screen.png')} style={{resizeMode:'cover', position:'absolute', top:0, left:0}} />
     }
@@ -144,9 +158,9 @@ export default class IngredientPicker extends React.Component {
             onSubmitEditing={this._keyboardDidHide}
             ref='searchBar' />
         </KeyboardAvoidingView>
-        <Animated.View style={ styles.popup }>
+        <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
           <Text style={styles.popupText}>Find recipes!</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate('RecipePicker')}>
             <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
           </TouchableOpacity>
         </Animated.View>

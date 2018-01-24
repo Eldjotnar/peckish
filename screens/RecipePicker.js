@@ -72,6 +72,7 @@ export default class RecipePicker extends React.Component {
   );
 
   _generateRecipePage = ({item}) => {
+    console.log("here for me");
     const { navigate } = this.props.navigation;
     navigate(
       'Recipe', {
@@ -123,13 +124,13 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
-        <View>
+      {/*<View>
           <Button
             title = "Try Getting Recipes"
             color = "gray"
             onPress = {this._getRecipes}
           />
-        </View>
+        </View>*/}
       </View>
     );
   }
