@@ -11,6 +11,7 @@ import {
 
 var {width, height} = Dimensions.get('window');
 var numSelected = 0;
+var selectedIngredients = {type:"ingredients", ingredients:[]};
 
 export class IngredientButton extends React.PureComponent {
   constructor(props) {
@@ -35,12 +36,19 @@ export class IngredientButton extends React.PureComponent {
   _onPress = () => {
     if(this.state.buttonColor == '#36363660'){
       this.setState({ buttonColor: '#d03d67' });
+      selectedIngredients.ingredients.push(this.props.title);
       numSelected++;
     } else {
       this.setState({ buttonColor: '#36363660' });
+      var index = selectedIngredients.ingredients.indexOf(this.props.title);
+      if (index > -1) {
+        selectedIngredients.ingredients.splice(index, 1);
+      }
       numSelected--;
     }
     this.props.callbackFromParent(numSelected);
+    this.props.ingredientsFromParent(selectedIngredients);
+    //console.log(selectedIngredients.ingredients);
   }
 
   render() {

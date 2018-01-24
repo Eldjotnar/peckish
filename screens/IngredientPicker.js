@@ -2,6 +2,7 @@ import React from 'react';
 import { StackNavigator} from 'react-navigation';
 import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import Drawer from 'react-native-drawer';
 import {
   StyleSheet,
   Text,
@@ -17,12 +18,14 @@ import {
   TouchableOpacity,
   Animated,
   Easing,
+  Button,
 } from 'react-native';
 
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
+var selectedIngredients = {};
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -31,6 +34,7 @@ export default class IngredientPicker extends React.Component {
     this.state = {
       loaded: false,
       textSearchHeight: 0,
+      keyboardShowing: false,
       showPopup: 'none',
       data: [
         {key: 'elbow macaroni'},
@@ -106,22 +110,44 @@ export default class IngredientPicker extends React.Component {
     }
   }
 
+  _getSelectedIngredients = (mySelected) => {
+    selectedIngredients = mySelected;
+  }
+
   _renderItem = ({item}) => (
     <IngredientButton
       title={item.key}
       callbackFromParent={this._getNumButtonsPressed}
+      ingredientsFromParent={this._getSelectedIngredients}
     />
   );
 
+  _getRecipes() {
+    fetch("http://rns203-8.cs.stolaf.edu:28488", {
+      method: "POST",
+      body: JSON.stringify(selectedIngredients),
+      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+    })
+    .then(
+      console.log("Talked to server")
+    )
+  }
+
   _leftAction = () => {
-    console.log("left button pressed");
+    this._drawer.open();
   }
 
   _rightAction = () => {
-    this.refs.searchBar.focus();
-    this.setState({
-      textSearchHeight: 50,
-    })
+    if(!this.state.keyboardShowing){
+      this.refs.searchBar.focus();
+      this.setState({
+        textSearchHeight: 50,
+        keyboardShowing: true,
+      })
+    } else {
+      Keyboard.dismiss();
+      this.setState({keyboardShowing: false, textSearchHeight: 0})
+    }
   }
 
 
@@ -135,36 +161,49 @@ export default class IngredientPicker extends React.Component {
       return <Image source={require('../assets/images/splash_screen.png')} style={{resizeMode:'cover', position:'absolute', top:0, left:0}} />
     }
     return (
-      <View style={styles.main}>
-        <StatusBar
-          barStyle="light-content"
-          translucent={false}
-        />
-        <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
-        <TopBar title="select ingredients"
-          leftIcon="ios-menu"
-          leftAction={this._leftAction}
-          rightIcon="ios-search"
-          rightAction={this._rightAction} />
-        <FlatList
-          data={this.state.data}
-          numColumns={2}
-          contentContainerStyle={styles.listContainer}
-          renderItem={this._renderItem}
-        />
-        <KeyboardAvoidingView behavior="padding">
-          <TextInput
-            style={[styles.textInput, {height: this.state.textSearchHeight}]}
-            onSubmitEditing={this._keyboardDidHide}
-            ref='searchBar' />
-        </KeyboardAvoidingView>
-        <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
-          <Text style={styles.popupText}>Find recipes!</Text>
-          <TouchableOpacity onPress={() => navigate('RecipePicker')}>
-            <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
+      <Drawer
+        ref={(ref) => this._drawer = ref}
+        tapToClose={true}
+        openDrawerOffset={width/2}
+        content={
+          <View style={styles.sideDrawerMain}>
+            <Text style={[styles.drawerText,{paddingTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
+            <Button style={styles.drawerText} title="Category" onPress={() => console.log("pressed")}/>
+            <Button style={styles.drawerText} title="Name" onPress={() => console.log("pressed")}/>
+            <Button style={styles.drawerText} title="Frequency" onPress={() => console.log("pressed")}/>
+          </View>
+        }>
+        <View style={styles.main}>
+          <StatusBar
+            barStyle="light-content"
+            translucent={false}
+          />
+          <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
+          <TopBar title="select ingredients"
+            leftIcon="ios-menu"
+            leftAction={this._leftAction}
+            rightIcon="ios-search"
+            rightAction={this._rightAction} />
+          <FlatList
+            data={this.state.data}
+            numColumns={2}
+            contentContainerStyle={styles.listContainer}
+            renderItem={this._renderItem}
+          />
+          <KeyboardAvoidingView behavior="padding">
+            <TextInput
+              style={[styles.textInput, {height: this.state.textSearchHeight}]}
+              onSubmitEditing={this._keyboardDidHide}
+              ref='searchBar' />
+          </KeyboardAvoidingView>
+          <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
+            <Text style={styles.popupText}>Find recipes!</Text>
+            <TouchableOpacity onPress={() => navigate('RecipePicker')}>
+              <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
+            </TouchableOpacity>
+          </Animated.View>
+        </View>
+      </Drawer>
     );
   }
 }
@@ -211,5 +250,15 @@ const styles = StyleSheet.create({
   popIcons: {
     color: 'white',
     marginLeft: 20,
+  },
+  sideDrawerMain: {
+    flex: 1,
+    paddingTop: height/50 + 15,
+    alignItems: 'center'
+  },
+  drawerText: {
+    fontFamily: 'multicolore',
+    color:'black',
+    marginBottom: 8,
   }
 });
