@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   FlatList,
   Button,
+  Alert,
+  Modal,
 } from 'react-native';
 
 import { TopBar } from '../components/TopBar';
@@ -23,6 +25,7 @@ export default class RecipePicker extends React.Component {
     super(props);
     this.state = {
       loaded: false,
+      modalDisplay: true,
       data: [
          {
             "imagePath":"../components/macandcheese.jpg",
@@ -55,6 +58,10 @@ export default class RecipePicker extends React.Component {
     this.setState({ loaded: true });
   }
   _keyExtractor = (item, index) => item.id;
+
+  getNavigationParams() {
+    return this.props.navigation.state.params || {}
+  }
 
   _imageSelector = (Uimage) => {
     let imagePath = `../assets/images/${Uimage}.jpg`
@@ -124,13 +131,13 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
-      {/*<View>
+      <View>
           <Button
             title = "Try Getting Recipes"
             color = "gray"
             onPress = {this._getRecipes}
           />
-        </View>*/}
+        </View>
       </View>
     );
   }
