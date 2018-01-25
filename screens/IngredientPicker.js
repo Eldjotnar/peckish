@@ -65,6 +65,10 @@ export default class IngredientPicker extends React.Component {
         {key: 'camerbert'},
         {key: 'bacon'},
         {key: 'ricotta'},
+        {key: 'Spaghetti'},
+        {key: 'Cheese'},
+        {key: 'Marinara'},
+        {key: 'POTATOES'},
       ]
     }
   }
@@ -127,22 +131,17 @@ export default class IngredientPicker extends React.Component {
     />
   );
 
-  _getRecipes() {
-    console.log("here");
+  _getRecipes = () => {
+    const { navigate } = this.props.navigation;
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
       method: "POST",
       body: JSON.stringify(selectedIngredients),
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
-    .then(
-      console.log("Talked to server")
-    )
-  }
-
-  // allows the user to generate recipes once 4 ingredients
-  // have been selected and the popup is showing
-  _popupAction = () => {
-    const { navigate } = this.props.navigation;
+    .then((res) => {
+      console.log(res)
+      return res.json()
+    })
     navigate(
       'RecipePicker', {
         numIngredients: numSelected,
@@ -233,7 +232,7 @@ export default class IngredientPicker extends React.Component {
           <KeyboardAvoidingView behavior="padding">
             <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
               <Text style={styles.popupText}>Find recipes!</Text>
-              <TouchableOpacity onPress={this._popupAction}>
+              <TouchableOpacity onPress={this._getRecipes}>
                 <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
               </TouchableOpacity>
             </Animated.View>
