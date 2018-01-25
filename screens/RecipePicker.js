@@ -85,13 +85,14 @@ export default class RecipePicker extends React.Component {
   _obtainRecipes() {
   fetch("http://rns203-8.cs.stolaf.edu:28488")
   .then((res) => {
+    console.log(res)
     return res.json()
   })
   .then((data) => {
   console.log(data)
-  data.hello.forEach(item => {
-    console.log(item)
-      })
+  console.log(data.I_id)
+  console.log(data.amount)
+  console.log(data.name) 
     })
   }
 
@@ -106,12 +107,6 @@ export default class RecipePicker extends React.Component {
     })
     .then(
       console.log("Talked to server")
-    )
-    .then(
-      _obtainRecipes()
-    )
-    .then(
-      console.log("Obtained recipes")
     )
   }
 
@@ -148,6 +143,13 @@ export default class RecipePicker extends React.Component {
             title = "Try Obtaining Recipes"
             color = "blue"
             onPress = {this._obtainRecipes}
+          />
+        </View>
+        <View>
+          <Button
+            title = "Try Sending Ingredients"
+            color = "blue"
+            onPress = {this._getRecipes}
           />
         </View>
       </View>
