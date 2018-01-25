@@ -89,6 +89,20 @@ export default class RecipePicker extends React.Component {
     );
   }
 
+  _obtainRecipes() {
+  fetch("http://rns203-8.cs.stolaf.edu:28488")
+  .then((res) => {
+    console.log(res)
+    return res.json()
+  })
+  .then((data) => {
+  console.log(data)
+  console.log(data.I_id)
+  console.log(data.amount)
+  console.log(data.name) 
+    })
+  }
+
   _getRecipes() {
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
       method: "POST",
@@ -131,10 +145,17 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
-      <View>
+        <View>
           <Button
-            title = "Try Getting Recipes"
-            color = "gray"
+            title = "Try Obtaining Recipes"
+            color = "blue"
+            onPress = {this._obtainRecipes}
+          />
+        </View>
+        <View>
+          <Button
+            title = "Try Sending Ingredients"
+            color = "blue"
             onPress = {this._getRecipes}
           />
         </View>
