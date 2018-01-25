@@ -123,6 +123,7 @@ export default class IngredientPicker extends React.Component {
   );
 
   _getRecipes() {
+    console.log("here");
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
       method: "POST",
       body: JSON.stringify(selectedIngredients),
@@ -131,6 +132,15 @@ export default class IngredientPicker extends React.Component {
     .then(
       console.log("Talked to server")
     )
+  }
+
+  _popupAction = () => {
+    const { navigate } = this.props.navigation;
+    navigate(
+      'RecipePicker', {
+        numIngredients: numSelected,
+      }
+    );
   }
 
   _leftAction = () => {
@@ -170,7 +180,7 @@ export default class IngredientPicker extends React.Component {
             <Text style={[styles.drawerText,{paddingTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
             <Button style={styles.drawerText} title="Category" onPress={() => console.log("pressed")}/>
             <Button style={styles.drawerText} title="Name" onPress={() => console.log("pressed")}/>
-            <Button style={styles.drawerText} title="Frequency" onPress={() => console.log("pressed")}/>
+            <Button style={styles.drawerText} title="send ingredients" onPress={this._getRecipes}/>
           </View>
         }>
         <View style={styles.main}>
@@ -198,7 +208,7 @@ export default class IngredientPicker extends React.Component {
           </KeyboardAvoidingView>
           <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
             <Text style={styles.popupText}>Find recipes!</Text>
-            <TouchableOpacity onPress={() => navigate('RecipePicker')}>
+            <TouchableOpacity onPress={this._popupAction}>
               <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
             </TouchableOpacity>
           </Animated.View>
