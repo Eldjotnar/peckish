@@ -1,6 +1,5 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import { AppLoading, Font } from 'expo';
 import {
   StyleSheet,
   View,
@@ -17,13 +16,11 @@ export class IngredientButton extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
       buttonColor: '#36363660',
     }
   }
 
   componentWillMount() {
-    this._loadAssetsAsync();
     this._setSelected();
   }
 
@@ -32,13 +29,6 @@ export class IngredientButton extends React.PureComponent {
       this.setState({ buttonColor: '#d03d67'});
     }
   }
-
-  _loadAssetsAsync = async () => {
-    await Font.loadAsync({
-      multicolore: require('../assets/fonts/Multicolore.otf'),
-    });
-    this.setState({ loaded: true });
-  };
 
   _onPress = () => {
     if(this.state.buttonColor == '#36363660'){

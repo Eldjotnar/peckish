@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import {StackNavigator} from 'react-navigation';
 import {
@@ -24,7 +23,6 @@ export default class RecipePicker extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      loaded: false,
       modalDisplay: true,
       data: [
          {
@@ -46,17 +44,9 @@ export default class RecipePicker extends React.Component {
   }
 
   componentWillMount() {
-    this._loadAssetsAsync();
+    //
   }
 
-  _loadAssetsAsync = async () => {
-    await Font.loadAsync({
-      multicolore: require('../assets/fonts/Multicolore.otf'),
-      comfortaa: require('../assets/fonts/Comfortaa.ttf'),
-      comfortaaBold: require('../assets/fonts/Comfortaa-Bold.ttf'),
-    });
-    this.setState({ loaded: true });
-  }
   _keyExtractor = (item, index) => item.id;
 
   getNavigationParams() {
@@ -79,7 +69,6 @@ export default class RecipePicker extends React.Component {
   );
 
   _generateRecipePage = ({item}) => {
-    console.log("here for me");
     const { navigate } = this.props.navigation;
     navigate(
       'Recipe', {
@@ -122,13 +111,6 @@ export default class RecipePicker extends React.Component {
   }
   render(){
     const { navigate } = this.props.navigation;
-    if(!this.state.loaded){
-      return (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      )
-    }
     return (
       <View style={styles.main}>
         <StatusBar

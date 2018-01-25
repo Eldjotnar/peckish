@@ -13,9 +13,12 @@ export default class Settings extends React.Component {
   constructor(props){
     super(props);
   }
+
+  // removes the navigation header
   static navigationOptions = {
     header: null
   }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
@@ -26,7 +29,7 @@ export default class Settings extends React.Component {
         />
         <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
         <View>
-          <Text>You are not logged in.</Text>
+          <Text style={styles.texter}>You are not logged in.</Text>
         </View>
       </View>
     );
@@ -45,4 +48,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
   },
+  texter: {
+    fontFamily: 'multicolore',
+  }
 });

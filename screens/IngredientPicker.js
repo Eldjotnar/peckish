@@ -1,6 +1,5 @@
 import React from 'react';
 import { StackNavigator} from 'react-navigation';
-import { AppLoading, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import Drawer from 'react-native-drawer';
 import {
@@ -23,6 +22,7 @@ import {
 
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
+
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
@@ -33,7 +33,6 @@ export default class IngredientPicker extends React.Component {
     super(props);
     this.animatedValue = new Animated.Value(0);
     this.state = {
-      loaded: false,
       textSearchHeight: 0,
       keyboardShowing: false,
       reRenderList: false,
@@ -77,7 +76,6 @@ export default class IngredientPicker extends React.Component {
 
   // loads the font on initial load and creates a listener for the keyboard
   componentWillMount() {
-    this._loadAssetsAsync();
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     this._createBackupData();
   }
@@ -95,14 +93,6 @@ export default class IngredientPicker extends React.Component {
         }
     ).start()
   }
-
-  // loads the font
-  _loadAssetsAsync = async () => {
-    await Font.loadAsync({
-      multicolore: require('../assets/fonts/Multicolore.otf'),
-    });
-    this.setState({ loaded: true });
-  };
 
   // automatically hides the search bar if the user closes the keyboard
   // without clicking the search button
@@ -193,7 +183,6 @@ export default class IngredientPicker extends React.Component {
   _createBackupData = () => {
     backupData = this.state.data;
     immutableData = backupData;
-    console.log("backup data created");
   }
 
   // searches the data for ingredients that contain that specific string
@@ -209,9 +198,6 @@ export default class IngredientPicker extends React.Component {
       inputRange: [0, 1],
       outputRange: [-width, 0]
     })
-    if(!this.state.loaded){
-      return <Image source={require('../assets/images/splash_screen.png')} style={{resizeMode:'cover', position:'absolute', top:0, left:0}} />
-    }
     return (
       <Drawer
         ref={(ref) => this._drawer = ref}
@@ -245,6 +231,12 @@ export default class IngredientPicker extends React.Component {
             renderItem={this._renderItem}
           />
           <KeyboardAvoidingView behavior="padding">
+            <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
+              <Text style={styles.popupText}>Find recipes!</Text>
+              <TouchableOpacity onPress={this._popupAction}>
+                <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
+              </TouchableOpacity>
+            </Animated.View>
             <TextInput
               style={[styles.textInput, {height: this.state.textSearchHeight}]}
               onSubmitEditing={this._keyboardDidHide}
@@ -252,12 +244,6 @@ export default class IngredientPicker extends React.Component {
               onChangeText={(text) => this._searchForIngredient(text)}
               ref='searchBar' />
           </KeyboardAvoidingView>
-          <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
-            <Text style={styles.popupText}>Find recipes!</Text>
-            <TouchableOpacity onPress={this._popupAction}>
-              <Ionicons style={styles.popIcons} name="ios-arrow-dropright" size={40} />
-            </TouchableOpacity>
-          </Animated.View>
         </View>
       </Drawer>
     );

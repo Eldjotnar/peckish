@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { AppLoading, Font } from 'expo';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import {
@@ -17,35 +16,18 @@ import {
 export default class Recipe extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      loaded: false,
-    }
   }
+
   static navigationOptions = {
     header: null
   }
-  componentWillMount() {
-    this._loadAssetsAsync();
-  }
+
   getNavigationParams() {
     return this.props.navigation.state.params || {}
   }
-  _loadAssetsAsync = async () => {
-    await Font.loadAsync({
-      comfortaa: require('../assets/fonts/Comfortaa.ttf'),
-      comfortaaBold: require('../assets/fonts/Comfortaa-Bold.ttf'),
-    });
-    this.setState({ loaded: true });
-  }
+
   render(){
     const { goBack } = this.props.navigation;
-    if(!this.state.loaded){
-      return (
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      )
-    }
     return (
       <View style={styles.main}>
         <StatusBar

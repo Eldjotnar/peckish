@@ -1,12 +1,14 @@
 import React from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
+import { AppLoading, Font } from 'expo';
 
 import IngredientPicker from './screens/IngredientPicker';
 import Test from './screens/Test';
 import RecipePicker from './screens/RecipePicker';
 import Recipe from './screens/Recipe';
+import Settings from './screens/Settings'
 
 const stackNavi = StackNavigator({
   RecipePicker: { screen: RecipePicker },
@@ -51,7 +53,7 @@ const Tabs = TabNavigator({
     },
   },
   Profile: {
-    screen: Recipe,
+    screen: Settings,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
@@ -85,7 +87,29 @@ const Tabs = TabNavigator({
 });
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    }
+  }
+  _loadAssetsAsync = async () => {
+    await Font.loadAsync({
+      multicolore: require('./assets/fonts/Multicolore.otf'),
+      comfortaa: require('./assets/fonts/Comfortaa.ttf'),
+      comfortaaBold: require('./assets/fonts/Comfortaa-Bold.ttf'),
+    });
+    this.setState({ loaded: true });
+  };
+
+  componentWillMount() {
+    this._loadAssetsAsync();
+  }
+
   render() {
+    if(!this.state.loaded){
+      return <View style={{backgroundColor: '#191e45', flex:1}}></View>
+    }
     return <Tabs/>;
   }
 }
