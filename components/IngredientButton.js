@@ -24,6 +24,13 @@ export class IngredientButton extends React.PureComponent {
 
   componentWillMount() {
     this._loadAssetsAsync();
+    this._setSelected();
+  }
+
+  _setSelected = () => {
+    if(selectedIngredients.ingredients.includes(this.props.title)){
+      this.setState({ buttonColor: '#d03d67'});
+    }
   }
 
   _loadAssetsAsync = async () => {
@@ -48,7 +55,6 @@ export class IngredientButton extends React.PureComponent {
     }
     this.props.callbackFromParent(numSelected);
     this.props.ingredientsFromParent(selectedIngredients);
-    //console.log(selectedIngredients.ingredients);
   }
 
   render() {

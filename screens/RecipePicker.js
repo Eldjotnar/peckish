@@ -99,7 +99,7 @@ export default class RecipePicker extends React.Component {
   console.log(data)
   console.log(data.I_id)
   console.log(data.amount)
-  console.log(data.name) 
+  console.log(data.name)
     })
   }
 

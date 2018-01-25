@@ -26,6 +26,7 @@ import { TopBar } from '../components/TopBar';
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
+var backupData, immutableData;
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -35,6 +36,7 @@ export default class IngredientPicker extends React.Component {
       loaded: false,
       textSearchHeight: 0,
       keyboardShowing: false,
+      reRenderList: false,
       showPopup: 'none',
       data: [
         {key: 'elbow macaroni'},
@@ -67,15 +69,20 @@ export default class IngredientPicker extends React.Component {
       ]
     }
   }
+
+  // removes the default navigation header
   static navigationOptions = {
     header: null
   }
 
+  // loads the font on initial load and creates a listener for the keyboard
   componentWillMount() {
     this._loadAssetsAsync();
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    this._createBackupData();
   }
 
+  // displays the popup and animates it in
   animate (easing) {
     this.setState({showPopup: 'flex'});
     this.animatedValue.setValue(0)
@@ -89,6 +96,7 @@ export default class IngredientPicker extends React.Component {
     ).start()
   }
 
+  // loads the font
   _loadAssetsAsync = async () => {
     await Font.loadAsync({
       multicolore: require('../assets/fonts/Multicolore.otf'),
@@ -96,24 +104,31 @@ export default class IngredientPicker extends React.Component {
     this.setState({ loaded: true });
   };
 
+  // automatically hides the search bar if the user closes the keyboard
+  // without clicking the search button
   _keyboardDidHide = () => {
     this.setState({
       textSearchHeight: 0,
     })
   }
 
+  // monitors the number of buttons pressed from the IngredientButtons and displays
+  // the popup if the user has selected more than 4
   _getNumButtonsPressed = (numButtonsPressed) => {
-    numSelected = numButtonsPressed; //this takes the numPressed from IngredientButton and passes it to the global variable here
+    numSelected = numButtonsPressed;
     if(numSelected >= 4 && this.state.showPopup != 'flex'){
       this.setState({showPopup: 'flex'});
       this.animate(Easing.ease);
     }
   }
 
+  // gets a JSON of which ingredients the user currently has selected
   _getSelectedIngredients = (mySelected) => {
     selectedIngredients = mySelected;
   }
 
+  // the button that is rendered by the flatlist, which also
+  // returns the buttons pressed and their respective ingredients
   _renderItem = ({item}) => (
     <IngredientButton
       title={item.key}
@@ -134,6 +149,8 @@ export default class IngredientPicker extends React.Component {
     )
   }
 
+  // allows the user to generate recipes once 4 ingredients
+  // have been selected and the popup is showing
   _popupAction = () => {
     const { navigate } = this.props.navigation;
     navigate(
@@ -143,10 +160,13 @@ export default class IngredientPicker extends React.Component {
     );
   }
 
+  // opens the drawer for sorting ingredients
   _leftAction = () => {
     this._drawer.open();
   }
 
+  // opens the keyboard and displays the search bar
+  // hides the keyboard and search bar on second click
   _rightAction = () => {
     if(!this.state.keyboardShowing){
       this.refs.searchBar.focus();
@@ -160,6 +180,28 @@ export default class IngredientPicker extends React.Component {
     }
   }
 
+  // sorts the ingredients alphabetically and refreshes the
+  // displayed buttons
+  _sortAlphabetically = () => {
+    this.state.data.sort(function(a,b){return a.key > b.key});
+    this.setState({reRenderList:true});
+    this._drawer.close();
+  }
+
+  // creates a backup copy of ingredient list so that the search
+  // and alphabitization features can be reverted
+  _createBackupData = () => {
+    backupData = this.state.data;
+    immutableData = backupData;
+    console.log("backup data created");
+  }
+
+  // searches the data for ingredients that contain that specific string
+  _searchForIngredient = (input) => {
+    var mySearchData = backupData.filter(s => s.key.includes(input));
+    this.setState({data: mySearchData});
+    backupData = immutableData;
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -178,8 +220,8 @@ export default class IngredientPicker extends React.Component {
         content={
           <View style={styles.sideDrawerMain}>
             <Text style={[styles.drawerText,{paddingTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
-            <Button style={styles.drawerText} title="Category" onPress={() => console.log("pressed")}/>
-            <Button style={styles.drawerText} title="Name" onPress={() => console.log("pressed")}/>
+            <Button style={styles.drawerText} title="Category" onPress={() => console.log(this._searchForIngredient('t'))}/>
+            <Button style={styles.drawerText} title="Name" onPress={this._sortAlphabetically}/>
             <Button style={styles.drawerText} title="send ingredients" onPress={this._getRecipes}/>
           </View>
         }>
@@ -197,6 +239,8 @@ export default class IngredientPicker extends React.Component {
           <FlatList
             data={this.state.data}
             numColumns={2}
+            keyboardShouldPersistTaps={"always"}
+            extraData={this.state.reRenderList}
             contentContainerStyle={styles.listContainer}
             renderItem={this._renderItem}
           />
@@ -204,6 +248,8 @@ export default class IngredientPicker extends React.Component {
             <TextInput
               style={[styles.textInput, {height: this.state.textSearchHeight}]}
               onSubmitEditing={this._keyboardDidHide}
+              autoCapitalize={'none'}
+              onChangeText={(text) => this._searchForIngredient(text)}
               ref='searchBar' />
           </KeyboardAvoidingView>
           <Animated.View style={[styles.popup, {display: this.state.showPopup, marginLeft: spin}]}>
