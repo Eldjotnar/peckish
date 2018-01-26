@@ -27,6 +27,7 @@ var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
 var backupData, immutableData;
+var obtainedRecipes=[];
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -139,12 +140,23 @@ export default class IngredientPicker extends React.Component {
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
     .then((res) => {
-      console.log(res)
+      //console.log(res)
       return res.json()
+    })
+    .then((data) => {
+    //console.log(data[0].imageurl)
+    data.forEach(recipe => {
+      //console.log(recipe)
+      obtainedRecipes.push(recipe);
+      // name.ingredients.ingredientnames.forEach(ing => {
+      //   console.log(ing)
+      // })
+    })
     })
     navigate(
       'RecipePicker', {
         numIngredients: numSelected,
+        obtainedRecipes: obtainedRecipes,
       }
     );
   }

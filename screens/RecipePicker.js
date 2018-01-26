@@ -44,7 +44,7 @@ export default class RecipePicker extends React.Component {
   }
 
   componentWillMount() {
-    //
+    this.setState({data: this.getNavigationParams().obtainedRecipes});
   }
 
   _keyExtractor = (item, index) => item.id;
@@ -134,20 +134,6 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
-        <View>
-          <Button
-            title = "Try Obtaining Recipes"
-            color = "blue"
-            onPress = {this._obtainRecipes}
-          />
-        </View>
-        <View>
-          <Button
-            title = "Try Sending Ingredients"
-            color = "blue"
-            onPress = {this._getRecipes}
-          />
-        </View>
       </View>
     );
   }
