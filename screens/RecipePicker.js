@@ -24,22 +24,7 @@ export default class RecipePicker extends React.Component {
     super(props);
     this.state = {
       modalDisplay: true,
-      data: [
-         {
-            "imagePath":"../components/macandcheese.jpg",
-            "title":"Pizza I promise",
-            "source":"Food Network",
-            "missing":"1",
-            "id":"000",
-         },
-         {
-            "imagePath":"require('../components/macandcheese.jpg')",
-            "title":"Macaroni and Cheese",
-            "source":"BudgetBytes",
-            "missing":"0",
-            "id":"001",
-         }
-      ],
+      data: [],
     };
   }
 
@@ -58,9 +43,13 @@ export default class RecipePicker extends React.Component {
     return String(imagePath);
   }
 
+  _refreshWithRecipes = () => {
+    this.setState({data: obtainedRecipes});
+  }
+
   _renderItem = ({item}) => (
     <RecipeCard
-      title={item.title}
+      title={item.rname}
       imagePath={require("../assets/images/pizza.jpg")}
       source={item.source}
       missing={item.missing}
@@ -72,46 +61,12 @@ export default class RecipePicker extends React.Component {
     const { navigate } = this.props.navigation;
     navigate(
       'Recipe', {
-        name: item.title,
+        name: item.rname,
         source: item.source,
       },
     );
   }
 
-  _obtainRecipes() {
-  fetch("http://rns203-8.cs.stolaf.edu:28488")
-  .then((res) => {
-    console.log(res)
-    return res.json()
-  })
-  .then((data) => {
-  console.log(data)
-  console.log(data.I_id)
-  console.log(data.amount)
-  console.log(data.name)
-    })
-  }
-
-  _getRecipes() {
-    fetch("http://rns203-8.cs.stolaf.edu:28488", {
-      method: "POST",
-      body: JSON.stringify({
-                  type:"ingredients",
-                  ingredients:["elbow macaroni","Cheese"],
-               }),
-      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
-    })
-    .then((res) => {
-      console.log(res)
-      return res.json()
-    })
-    .then((data) => {
-    console.log(data)
-    console.log(data.I_id)
-    console.log(data.amount)
-    console.log(data.name)
-      })
-  }
 
   static navigationOptions = {
     header: null
@@ -136,16 +91,9 @@ export default class RecipePicker extends React.Component {
         />
         <View>
           <Button
-            title = "Try Obtaining Recipes"
+            title = "Refresh Recipes"
             color = "blue"
-            onPress = {this._obtainRecipes}
-          />
-        </View>
-        <View>
-          <Button
-            title = "Try Sending Ingredients"
-            color = "blue"
-            onPress = {this._getRecipes}
+            onPress = {this._refreshWithRecipes}
           />
         </View>
       </View>

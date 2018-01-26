@@ -10,6 +10,9 @@ import RecipePicker from './screens/RecipePicker';
 import Recipe from './screens/Recipe';
 import Settings from './screens/Settings'
 
+var initObtainedRecipes=[];
+obtainedRecipes = initObtainedRecipes
+
 const stackNavi = StackNavigator({
   RecipePicker: { screen: RecipePicker },
   Recipe: { screen: Recipe },

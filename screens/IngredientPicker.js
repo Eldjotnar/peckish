@@ -139,8 +139,13 @@ export default class IngredientPicker extends React.Component {
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
     .then((res) => {
-      console.log(res)
       return res.json()
+    })
+    .then((data) => {
+      console.log(data)
+      data.forEach(recipe => {
+        obtainedRecipes.push(recipe)
+      })
     })
     navigate(
       'RecipePicker', {
