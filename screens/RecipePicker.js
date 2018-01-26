@@ -50,8 +50,8 @@ export default class RecipePicker extends React.Component {
   _renderItem = ({item}) => (
     <RecipeCard
       title={item.rname}
-      imagePath={require("../assets/images/pizza.jpg")}
-      source={item.source}
+      imagePath={{uri: item.imageurl}}
+      source={item.url}
       missing={item.missing}
       recipeAction={() => this._generateRecipePage({item})}
     />
