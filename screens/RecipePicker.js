@@ -93,12 +93,11 @@ export default class RecipePicker extends React.Component {
       "rname": "WTF Student Pasta",
       "url": "https://wp.stolaf.edu/",
     }});
-    // this.setState({data: this.getNavigationParams().obtainedRecipes.obtainedRecipes});
   }
 
   _renderItem = ({item}) => (
     <RecipeCard
-      rname={item.rname}
+      title={item.rname}
       imagePath={require("../assets/images/pizza.jpg")}
       source={item.source}
       missing={item.missing}
