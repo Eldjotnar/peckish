@@ -18,7 +18,6 @@ import {
   Animated,
   Easing,
   Button,
-  AsyncStorage,
 } from 'react-native';
 
 import { IngredientButton } from '../components/IngredientButton';
