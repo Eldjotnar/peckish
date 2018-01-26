@@ -44,6 +44,11 @@ export default class RecipePicker extends React.Component {
   }
 
   componentWillMount() {
+    //
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log("I am here")
     this.setState({data: this.getNavigationParams().obtainedRecipes});
   }
 
@@ -56,6 +61,11 @@ export default class RecipePicker extends React.Component {
   _imageSelector = (Uimage) => {
     let imagePath = `../assets/images/${Uimage}.jpg`
     return String(imagePath);
+  }
+
+  _refreshWithRecipes = () => {
+    console.log(this.getNavigationParams().obtainedRecipes)
+    this.setState({data: this.getNavigationParams().obtainedRecipes});
   }
 
   _renderItem = ({item}) => (
@@ -100,6 +110,13 @@ export default class RecipePicker extends React.Component {
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
+        <View>
+          <Button
+            title = "Refresh Recipes"
+            color = "blue"
+            onPress = {this._refreshWithRecipes}
+          />
+        </View>
       </View>
     );
   }
