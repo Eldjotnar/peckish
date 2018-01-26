@@ -18,6 +18,7 @@ import {
   Animated,
   Easing,
   Button,
+  AsyncStorage,
 } from 'react-native';
 
 import { IngredientButton } from '../components/IngredientButton';
@@ -27,13 +28,6 @@ var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
 var backupData, immutableData;
-var obtainedRecipes=[{
-            "imagePath":"../components/macandcheese.jpg",
-            "title":"NOT A FOOD",
-            "source":"NOT A FOOD",
-            "missing":"1",
-            "id":"000",
-         },];
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -138,6 +132,18 @@ export default class IngredientPicker extends React.Component {
     />
   );
 
+  _saveRecipes = (r) => {
+    //try {
+      AsyncStorage.setItem('recipes',r)
+        .error((err) => {
+          console.log("Failed to save recipes")
+        })
+//    }
+//    catch (error){
+//      console.log("Failed to save recipes")
+//    }
+  }
+
   _getRecipes = () => {
     const { navigate } = this.props.navigation;
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
@@ -149,14 +155,13 @@ export default class IngredientPicker extends React.Component {
       return res.json()
     })
     .then((data) => {
-    data.forEach(recipe => {
-      obtainedRecipes.push(recipe)
-    })
+      data.forEach(recipe => {
+        obtainedRecipes.push(recipe)
+      })
     })
     navigate(
       'RecipePicker', {
         numIngredients: numSelected,
-        obtainedRecipes: obtainedRecipes,
       }
     );
   }

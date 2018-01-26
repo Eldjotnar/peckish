@@ -48,7 +48,7 @@ export default class RecipePicker extends React.Component {
   }
 
   _refreshWithRecipes = () => {
-    this.setState({data: "hello"});
+    this.setState({data: obtainedRecipes});
     console.log(this.state.data)
   }
 
