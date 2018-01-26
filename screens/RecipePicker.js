@@ -78,40 +78,6 @@ export default class RecipePicker extends React.Component {
     );
   }
 
-  _obtainRecipes() {
-  fetch("http://rns203-8.cs.stolaf.edu:28488")
-  .then((res) => {
-    console.log(res)
-    return res.json()
-  })
-  .then((data) => {
-  console.log(data)
-  console.log(data.I_id)
-  console.log(data.amount)
-  console.log(data.name)
-    })
-  }
-
-  _getRecipes() {
-    fetch("http://rns203-8.cs.stolaf.edu:28488", {
-      method: "POST",
-      body: JSON.stringify({
-                  type:"ingredients",
-                  ingredients:["elbow macaroni","Cheese"],
-               }),
-      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
-    })
-    .then((res) => {
-      console.log(res)
-      return res.json()
-    })
-    .then((data) => {
-    console.log(data)
-    console.log(data.I_id)
-    console.log(data.amount)
-    console.log(data.name)
-      })
-  }
 
   static navigationOptions = {
     header: null
