@@ -27,7 +27,13 @@ var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
 var backupData, immutableData;
-var obtainedRecipes=[];
+var obtainedRecipes=[{
+            "imagePath":"../components/macandcheese.jpg",
+            "title":"NOT A FOOD",
+            "source":"NOT A FOOD",
+            "missing":"1",
+            "id":"000",
+         },];
 
 export default class IngredientPicker extends React.Component {
   constructor(props) {
@@ -146,7 +152,7 @@ export default class IngredientPicker extends React.Component {
     .then((data) => {
     //console.log(data[0].imageurl)
     data.forEach(recipe => {
-      //console.log(recipe)
+      console.log(recipe)
       obtainedRecipes.push(recipe);
       // name.ingredients.ingredientnames.forEach(ing => {
       //   console.log(ing)

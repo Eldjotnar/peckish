@@ -27,14 +27,14 @@ export default class RecipePicker extends React.Component {
       data: [
          {
             "imagePath":"../components/macandcheese.jpg",
-            "title":"Pizza I promise",
+            "rname":"Pizza I promise",
             "source":"Food Network",
             "missing":"1",
             "id":"000",
          },
          {
             "imagePath":"require('../components/macandcheese.jpg')",
-            "title":"Macaroni and Cheese",
+            "rname":"Macaroni and Cheese",
             "source":"BudgetBytes",
             "missing":"0",
             "id":"001",
@@ -48,8 +48,7 @@ export default class RecipePicker extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("I am here")
-    this.setState({data: this.getNavigationParams().obtainedRecipes});
+    //
   }
 
   _keyExtractor = (item, index) => item.id;
@@ -64,13 +63,42 @@ export default class RecipePicker extends React.Component {
   }
 
   _refreshWithRecipes = () => {
-    console.log(this.getNavigationParams().obtainedRecipes)
-    this.setState({data: this.getNavigationParams().obtainedRecipes});
+    console.log(this.getNavigationParams())
+    this.setState({data: {
+      "imageurl": "https://cdn.pixabay.com/photo/2013/11/24/10/40/dessert-216870_960_720.jpg",
+      "ingredients": {
+        "amounts": [
+          "a pinch",
+          "a pinch",
+          "a pinch",
+          "a pinch",
+        ],
+        "iid": 0,
+        "ingredientIDs": [
+          1,
+          4,
+          5,
+          6,
+        ],
+        "ingredientnames": [
+          "Spaghetti",
+          "Marinara Sauce",
+          "POTATOES",
+          "Bell Peppers",
+        ],
+      },
+      "missing": 2,
+      "rating": 0,
+      "rid": 3,
+      "rname": "WTF Student Pasta",
+      "url": "https://wp.stolaf.edu/",
+    }});
+    // this.setState({data: this.getNavigationParams().obtainedRecipes.obtainedRecipes});
   }
 
   _renderItem = ({item}) => (
     <RecipeCard
-      title={item.title}
+      rname={item.rname}
       imagePath={require("../assets/images/pizza.jpg")}
       source={item.source}
       missing={item.missing}
@@ -82,7 +110,7 @@ export default class RecipePicker extends React.Component {
     const { navigate } = this.props.navigation;
     navigate(
       'Recipe', {
-        name: item.title,
+        name: item.rname,
         source: item.source,
       },
     );
