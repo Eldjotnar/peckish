@@ -24,22 +24,7 @@ export default class RecipePicker extends React.Component {
     super(props);
     this.state = {
       modalDisplay: true,
-      data: [
-         {
-            "imagePath":"../components/macandcheese.jpg",
-            "rname":"Pizza I promise",
-            "source":"Food Network",
-            "missing":"1",
-            "id":"000",
-         },
-         {
-            "imagePath":"require('../components/macandcheese.jpg')",
-            "rname":"Macaroni and Cheese",
-            "source":"BudgetBytes",
-            "missing":"0",
-            "id":"001",
-         }
-      ],
+      data: [],
     };
   }
 
@@ -63,36 +48,8 @@ export default class RecipePicker extends React.Component {
   }
 
   _refreshWithRecipes = () => {
-    console.log(this.getNavigationParams())
-    this.setState({data: {
-      "imageurl": "https://cdn.pixabay.com/photo/2013/11/24/10/40/dessert-216870_960_720.jpg",
-      "ingredients": {
-        "amounts": [
-          "a pinch",
-          "a pinch",
-          "a pinch",
-          "a pinch",
-        ],
-        "iid": 0,
-        "ingredientIDs": [
-          1,
-          4,
-          5,
-          6,
-        ],
-        "ingredientnames": [
-          "Spaghetti",
-          "Marinara Sauce",
-          "POTATOES",
-          "Bell Peppers",
-        ],
-      },
-      "missing": 2,
-      "rating": 0,
-      "rid": 3,
-      "rname": "WTF Student Pasta",
-      "url": "https://wp.stolaf.edu/",
-    }});
+    this.setState({data: "hello"});
+    console.log(this.state.data)
   }
 
   _renderItem = ({item}) => (
