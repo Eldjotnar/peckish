@@ -10,13 +10,7 @@ import RecipePicker from './screens/RecipePicker';
 import Recipe from './screens/Recipe';
 import Settings from './screens/Settings'
 
-var initObtainedRecipes=[{
-            "imagePath":"../components/macandcheese.jpg",
-            "title":"NOT A FOOD",
-            "source":"NOT A FOOD",
-            "missing":"1",
-            "id":"000",
-         },];
+var initObtainedRecipes=[];
 obtainedRecipes = initObtainedRecipes
 
 const stackNavi = StackNavigator({
