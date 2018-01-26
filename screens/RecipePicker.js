@@ -32,10 +32,6 @@ export default class RecipePicker extends React.Component {
     //
   }
 
-  componentWillReceiveProps(nextProps){
-    //
-  }
-
   _keyExtractor = (item, index) => item.id;
 
   getNavigationParams() {

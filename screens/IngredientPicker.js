@@ -132,18 +132,6 @@ export default class IngredientPicker extends React.Component {
     />
   );
 
-  _saveRecipes = (r) => {
-    //try {
-      AsyncStorage.setItem('recipes',r)
-        .error((err) => {
-          console.log("Failed to save recipes")
-        })
-//    }
-//    catch (error){
-//      console.log("Failed to save recipes")
-//    }
-  }
-
   _getRecipes = () => {
     const { navigate } = this.props.navigation;
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
@@ -155,6 +143,7 @@ export default class IngredientPicker extends React.Component {
       return res.json()
     })
     .then((data) => {
+      console.log(data)
       data.forEach(recipe => {
         obtainedRecipes.push(recipe)
       })
