@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import {StackNavigator} from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
+import Drawer from 'react-native-drawer';
 import { connect } from 'react-redux';
 import {
   Image,
@@ -29,25 +30,16 @@ class RecipePicker extends React.Component {
   componentWillMount() {
   }
 
-  _getUpdatedState = () => {
-    this.props.fetchData();
+  // opens the drawer when the user selects the menu
+  _leftAction = () => {
+    this._drawer.open();
   }
 
+  // tells the flatlist to index by recipe id
   _keyExtractor = (item, index) => item.rid;
 
-  getNavigationParams() {
-    return this.props.navigation.state.params || {}
-  }
-
-  _imageSelector = (Uimage) => {
-    let imagePath = `../assets/images/${Uimage}.jpg`
-    return String(imagePath);
-  }
-
-  _refreshWithRecipes = () => {
-    this.setState({data: obtainedRecipes});
-  }
-
+  // renders a recipe card in the FlatList for each recipe
+  // found by the server
   _renderItem = ({item}) => (
     <RecipeCard
       title={item.rname}
@@ -58,6 +50,8 @@ class RecipePicker extends React.Component {
     />
   );
 
+  // creates the recipe page that displays the
+  // recipe the user selected
   _generateRecipePage = ({item}) => {
     const { navigate } = this.props.navigation;
     navigate(
@@ -68,38 +62,54 @@ class RecipePicker extends React.Component {
     );
   }
 
+  // removes header formed by navigation
   static navigationOptions = {
     header: null
   }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.main}>
-        <StatusBar
-          barStyle="light-content"
-          translucent={false} />
-        <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
-        <TopBar title="browse recipes"
-          leftIcon="ios-menu"
-          leftAction={this._leftAction}
-          rightIcon="ios-search"
-          rightAction={this._rightAction} />
-        {
-          this.props.recipesIsFetching && <Text style={{backgroundColor:'transparent', color:'white', fontFamily:'comfortaaBold'}}>Loading...</Text>
-        }
-        {
-          !this.props.recipesFetched &&
-           <View style={styles.textContainer}>
-             <Text style={styles.normalText}>It looks like you haven't selected any ingredients yet!</Text>
-             <Text style={[styles.normalText, {fontSize: 14}]}>Please select at least 4 ingredients to generate recipes</Text>
-           </View>
-        }
-        <FlatList
-          data={this.props.recipes[0]}
-          renderItem={this._renderItem}
-          keyExtractor={this._keyExtractor}
-        />
-      </View>
+      <Drawer
+        ref={(ref) => this._drawer = ref}
+        tapToClose={true}
+        openDrawerOffset={width/2}
+        content={
+          <View style={styles.sideDrawerMain}>
+            <Text style={[styles.drawerText,{marginTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
+            <Text style={styles.drawerText} onPress={() => console.log(this._searchForIngredient('t'))}>Ingredients Missing</Text>
+            <Text style={styles.drawerText} onPress={() => console.log("hi")}>Name</Text>
+            <Text style={styles.drawerText} onPress={() => console.log("hi")}>Rating</Text>
+            <Text style={styles.drawerText} onPress={() => console.log("hi")}>Source</Text>
+          </View>
+        }>
+        <View style={styles.main}>
+          <StatusBar
+            barStyle="light-content"
+            translucent={false} />
+          <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
+          <TopBar title="browse recipes"
+            leftIcon="ios-menu"
+            leftAction={this._leftAction}
+            rightIcon="ios-search"
+            rightAction={this._rightAction} />
+          {
+            this.props.recipesIsFetching && <Text style={{backgroundColor:'transparent', color:'white', fontFamily:'comfortaaBold'}}>Loading...</Text>
+          }
+          {
+            !this.props.recipesFetched &&
+             <View style={styles.textContainer}>
+               <Text style={styles.normalText}>It looks like you haven't selected any ingredients yet!</Text>
+               <Text style={[styles.normalText, {fontSize: 14}]}>Please select at least 4 ingredients to generate recipes</Text>
+             </View>
+          }
+          <FlatList
+            data={this.props.recipes[0]}
+            renderItem={this._renderItem}
+            keyExtractor={this._keyExtractor}
+          />
+        </View>
+      </Drawer>
     );
   }
 }
@@ -129,6 +139,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     textAlign: 'center',
     marginBottom: 20,
+  },
+  sideDrawerMain: {
+    flex: 1,
+    paddingTop: height/50 + 15,
+    alignItems: 'center'
+  },
+  drawerText: {
+    fontFamily: 'multicolore',
+    color:'black',
+    marginTop: 20,
   }
 });
 

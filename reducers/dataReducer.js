@@ -1,6 +1,7 @@
 const initState = {
   ingredients: [],
-  selectedIngredients: [],
+  ingredientsFetched: false,
+  ingredientsIsFetching: false,
   recipes: [],
   recipesFetched: false,
   recipesIsFetching: false,
@@ -28,10 +29,25 @@ const RecipeReducer = (state = initState, action) => {
         recipesIsFetching: false,
         error: true,
       }
-    case 'ADD_RECIPE':
+    case 'FETCHING_INGREDIENTS':
       return {
         ...state,
-        recipes: [...state.recipes, action.data]
+        ingredients: [],
+        ingredientsIsFetching: true
+      }
+    case 'FETCHING_INGREDIENTS_SUCCESS':
+      //console.log(action.data.ingredientnames)
+      return {
+        ...state,
+        ingredientsIsFetching: true,
+        ingredientsFetched: true,
+        ingredients: [...state.ingredients, action.data.ingredientnames]
+      }
+    case 'FETCHING_INGREDIENTS_FAILURE':
+      return {
+        ...state,
+        recipesIsFetching: false,
+        error: true,
       }
     default:
       return state;

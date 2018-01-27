@@ -55,7 +55,7 @@ export default class Settings extends React.Component {
           translucent={false}
         />
         <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
-        <KeyboardAvoidingView style={styles.main}>
+        <KeyboardAvoidingView style={{alignItems: 'center',justifyContent: 'center'}}>
           <Image style={styles.logo} source={require('../assets/images/peckish_logo.png')} />
           <View>
             <Text style={styles.texter}>Please log in</Text>
@@ -75,7 +75,7 @@ export default class Settings extends React.Component {
           </TouchableWithoutFeedback>
           <View style={{alignItems: 'center'}}>
             <Text style={styles.subText}>Don't have an account?</Text>
-            <Text onPress={() => this._openModal} style={[styles.subText, {textDecorationLine:'underline', marginTop:10}]}> Create one!</Text>
+            <Text onPress={this._openModal} style={[styles.subText, {textDecorationLine:'underline', marginTop:10}]}> Create one!</Text>
           </View>
         </KeyboardAvoidingView>
       </View>

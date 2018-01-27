@@ -23,7 +23,7 @@ import {
 
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
-import { fetchData } from '../actions/Actions';
+import { fetchData, fetchIngredients } from '../actions/Actions';
 
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
@@ -201,6 +201,11 @@ class IngredientPicker extends React.Component {
     backupData = immutableData;
   }
 
+  _testServer = () => {
+    this.props.fetchIngredients();
+    console.log("I got: " + this.props.ingredients)
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     const spin = this.animatedValue.interpolate({
@@ -214,10 +219,10 @@ class IngredientPicker extends React.Component {
         openDrawerOffset={width/2}
         content={
           <View style={styles.sideDrawerMain}>
-            <Text style={[styles.drawerText,{paddingTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
-            <Button style={styles.drawerText} title="Category" onPress={() => console.log(this._searchForIngredient('t'))}/>
-            <Button style={styles.drawerText} title="Name" onPress={this._sortAlphabetically}/>
-            <Button style={styles.drawerText} title="send ingredients" onPress={this._getRecipes}/>
+            <Text style={[styles.drawerText,{marginTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
+              <Text style={styles.drawerText} onPress={() => console.log("hi")}>Name</Text>
+              <Text style={styles.drawerText} onPress={() => console.log("hi")}>Category</Text>
+              <Text style={styles.drawerText} onPress={this._testServer}>Test</Text>
           </View>
         }>
         <View style={styles.main}>
@@ -305,25 +310,26 @@ const styles = StyleSheet.create({
   sideDrawerMain: {
     flex: 1,
     paddingTop: height/50 + 15,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   drawerText: {
     fontFamily: 'multicolore',
     color:'black',
-    marginBottom: 8,
+    marginTop: 20,
   }
 });
 
 function mapStateToProps (state) {
   return {
-    recipes: state.recipes,
-    recipesIsFetching: state.recipesIsFetching
+    ingredients: state.ingredients,
+    ingredientsIsFetching: state.ingredientsIsFetching
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchData: (selectedIngredients) => dispatch(fetchData(selectedIngredients))
+    fetchIngredients: () => dispatch(fetchIngredients()),
+    fetchData: (selectedIngredients) => dispatch(fetchData(selectedIngredients)),
   }
 }
 
