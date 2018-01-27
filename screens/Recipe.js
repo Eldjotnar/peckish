@@ -13,6 +13,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+let recipeIngredients = {}
+
 export default class Recipe extends React.Component {
   constructor(props){
     super(props);
@@ -24,6 +26,14 @@ export default class Recipe extends React.Component {
 
   getNavigationParams() {
     return this.props.navigation.state.params || {}
+  }
+
+  formatIngredients() {
+    tmp = {}
+    console.log(this.getNavigationParams())
+    tmp['amount'] = this.getNavigationParams().amount //don't exist yet
+    tmp['ingredient'] = this.getNavigationParams().ingredients //don't exist yet
+    return [tmp]
   }
 
   render(){
@@ -51,7 +61,8 @@ export default class Recipe extends React.Component {
           <ScrollView>
             <Text style={styles.subText}>Ingredients</Text>
             <FlatList
-              data={[{'amount':'1/2 tsp', key: 'salt'}, {'amount':'2 cups', key: 'elbow macaroni'}, {'amount':'2 Tbsp',key: 'butter'}, {'amount':'1/2 tsp',key:'dijon mustard'}, {'amount':'1 pinch of',key:'cayenne pepper'}, {'amount':'1.5 cups', key:'shredded sharp cheddar'}]}
+              // data={[{'amount':'1/2 tsp', key: 'salt'}, {'amount':'2 cups', key: 'elbow macaroni'}, {'amount':'2 Tbsp',key: 'butter'}, {'amount':'1/2 tsp',key:'dijon mustard'}, {'amount':'1 pinch of',key:'cayenne pepper'}, {'amount':'1.5 cups', key:'shredded sharp cheddar'}]}
+              data={this.formatIngredients()}
               renderItem={({item}) => <Text style={styles.listText}>{item.amount} {item.key}</Text>}
               scrollEnabled={false}
             />
