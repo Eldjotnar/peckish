@@ -83,6 +83,13 @@ class RecipePicker extends React.Component {
         {
           this.props.recipesIsFetching && <Text style={{backgroundColor:'transparent', color:'white', fontFamily:'comfortaaBold'}}>Loading...</Text>
         }
+        {
+          !this.props.recipesFetched &&
+           <View style={styles.textContainer}>
+             <Text style={styles.normalText}>It looks like you haven't selected any ingredients yet!</Text>
+             <Text style={[styles.normalText, {fontSize: 14}]}>Please select at least 4 ingredients to generate recipes</Text>
+           </View>
+        }
         <FlatList
           data={this.props.recipes[0]}
           renderItem={this._renderItem}
@@ -105,11 +112,26 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
   },
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+  },
+  normalText: {
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'multicolore',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    marginBottom: 20,
+  }
 });
 
 function mapStateToProps (state) {
   return {
     recipes: state.recipes,
+    recipesFetched: state.recipesFetched,
     recipesIsFetching: state.recipesIsFetching
   }
 }

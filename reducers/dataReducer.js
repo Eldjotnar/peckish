@@ -19,6 +19,7 @@ const RecipeReducer = (state = initState, action) => {
       return {
         ...state,
         recipesIsFetching: false,
+        recipesFetched: true,
         recipes: [...state.recipes, action.data]
       }
     case 'FETCHING_RECIPES_FAILURE':
