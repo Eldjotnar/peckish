@@ -58,8 +58,8 @@ class RecipePicker extends React.Component {
     const { navigate } = this.props.navigation;
     navigate(
       'Recipe', {
-        name: item.title,
-        source: item.source,
+        name: item.rname,
+        source: item.url,
       },
     );
   }
