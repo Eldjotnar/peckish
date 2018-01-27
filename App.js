@@ -3,12 +3,18 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform, View } from 'react-native';
 import { AppLoading, Font } from 'expo';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'
 
 import IngredientPicker from './screens/IngredientPicker';
 import Test from './screens/Test';
 import RecipePicker from './screens/RecipePicker';
 import Recipe from './screens/Recipe';
-import Settings from './screens/Settings'
+import Settings from './screens/Settings';
+
+import Reducer from './reducers/dataReducer';
+import Actions from './actions/Actions';
 
 var initObtainedRecipes=[];
 obtainedRecipes = initObtainedRecipes
@@ -90,6 +96,8 @@ const Tabs = TabNavigator({
 });
 
 export default class App extends React.Component {
+  store = createStore(Reducer, applyMiddleware(thunk));
+
   constructor(props) {
     super(props);
     this.state = {
@@ -113,6 +121,10 @@ export default class App extends React.Component {
     if(!this.state.loaded){
       return <View style={{backgroundColor: '#191e45', flex:1}}></View>
     }
-    return <Tabs/>;
+    return (
+      <Provider store={this.store}>
+        <Tabs/>
+      </Provider>
+    );
   }
 }

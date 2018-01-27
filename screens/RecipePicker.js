@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {StackNavigator} from 'react-navigation';
+import { connect } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -12,27 +13,27 @@ import {
   FlatList,
   Button,
   Alert,
-  Modal,
 } from 'react-native';
+
+import { fetchData } from '../actions/Actions';
 
 import { TopBar } from '../components/TopBar';
 import { RecipeCard } from '../components/RecipeCard';
 var {width, height} = Dimensions.get('window');
 
-export default class RecipePicker extends React.Component {
+class RecipePicker extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      modalDisplay: true,
-      data: [],
-    };
   }
 
   componentWillMount() {
-    //
   }
 
-  _keyExtractor = (item, index) => item.id;
+  _getUpdatedState = () => {
+    this.props.fetchData();
+  }
+
+  _keyExtractor = (item, index) => item.rid;
 
   getNavigationParams() {
     return this.props.navigation.state.params || {}
@@ -62,11 +63,10 @@ export default class RecipePicker extends React.Component {
     navigate(
       'Recipe', {
         name: item.rname,
-        source: item.source,
+        source: item.url,
       },
     );
   }
-
 
   static navigationOptions = {
     header: null
@@ -84,18 +84,21 @@ export default class RecipePicker extends React.Component {
           leftAction={this._leftAction}
           rightIcon="ios-search"
           rightAction={this._rightAction} />
+        {
+          this.props.recipesIsFetching && <Text style={{backgroundColor:'transparent', color:'white', fontFamily:'comfortaaBold'}}>Loading...</Text>
+        }
+        {
+          !this.props.recipesFetched &&
+           <View style={styles.textContainer}>
+             <Text style={styles.normalText}>It looks like you haven't selected any ingredients yet!</Text>
+             <Text style={[styles.normalText, {fontSize: 14}]}>Please select at least 4 ingredients to generate recipes</Text>
+           </View>
+        }
         <FlatList
-          data={this.state.data}
+          data={this.props.recipes[0]}
           renderItem={this._renderItem}
           keyExtractor={this._keyExtractor}
         />
-        <View>
-          <Button
-            title = "Refresh Recipes"
-            color = "blue"
-            onPress = {this._refreshWithRecipes}
-          />
-        </View>
       </View>
     );
   }
@@ -113,4 +116,37 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
   },
-})
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 10,
+  },
+  normalText: {
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'multicolore',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    marginBottom: 20,
+  }
+});
+
+function mapStateToProps (state) {
+  return {
+    recipes: state.recipes,
+    recipesFetched: state.recipesFetched,
+    recipesIsFetching: state.recipesIsFetching
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    fetchData: () => dispatch(fetchData())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RecipePicker);

@@ -25,7 +25,8 @@
     "react-native": "0.50.3",
     "react-native-drawer": "^2.5.0",
     "react-native-fontawesome": "^5.7.0",
-    "react-navigation": "^1.0.0-beta.27"
+    "react-navigation": "^1.0.0-beta.27",
+    "redux-thunk": "^2.2.0"
   },
   "rnpm": {
     "assets": [
