@@ -171,6 +171,22 @@ class IngredientPicker extends React.Component {
     this._drawer.close();
   }
 
+  // sorts the ingredients by frequency in each recipe
+  // and refreshes the displayed buttons
+  _sortByFrequency = () => {
+    //
+    this.setState({reRenderList:true});
+    this._drawer.close();
+  }
+
+  // sorts the ingredients by category and
+  // refreshes the displayed buttons
+  _sortByCategory = () => {
+    //
+    this.setState({reRenderList:true});
+    this._drawer.close();
+  }
+
   // creates a backup copy of ingredient list so that the search
   // and alphabitization features can be reverted
   _createBackupData = () => {
