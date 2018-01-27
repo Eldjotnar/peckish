@@ -44,6 +44,10 @@ class RecipePicker extends React.Component {
     return String(imagePath);
   }
 
+  _refreshWithRecipes = () => {
+    this.setState({data: obtainedRecipes});
+  }
+
   _renderItem = ({item}) => (
     <RecipeCard
       title={item.rname}

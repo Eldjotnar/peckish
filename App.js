@@ -16,6 +16,9 @@ import Settings from './screens/Settings';
 import Reducer from './reducers/dataReducer';
 import Actions from './actions/Actions';
 
+var initObtainedRecipes=[];
+obtainedRecipes = initObtainedRecipes
+
 const stackNavi = StackNavigator({
   RecipePicker: { screen: RecipePicker },
   Recipe: { screen: Recipe },
