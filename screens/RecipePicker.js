@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import {StackNavigator} from 'react-navigation';
+import { connect } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -15,11 +16,13 @@ import {
   Modal,
 } from 'react-native';
 
+import { recipeAdded } from '../actions/Actions';
+
 import { TopBar } from '../components/TopBar';
 import { RecipeCard } from '../components/RecipeCard';
 var {width, height} = Dimensions.get('window');
 
-export default class RecipePicker extends React.Component {
+class RecipePicker extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -44,7 +47,15 @@ export default class RecipePicker extends React.Component {
   }
 
   componentWillMount() {
-    //
+    this.props.recipeAdded({ key:"hello there" });
+    this.props.recipeAdded({ key:"hello there2" });
+    this.props.recipeAdded({ key:"hello there3" });
+    //console.log("ha " + this.props.);
+  }
+
+  _getUpdatedState = () => {
+    this.props.recipeAdded({ key:"hello there"});
+    console.log(this.props.recipes);
   }
 
   _keyExtractor = (item, index) => item.id;
@@ -143,9 +154,9 @@ export default class RecipePicker extends React.Component {
         </View>
         <View>
           <Button
-            title = "Try Sending Ingredients"
+            title = "Try getting state"
             color = "blue"
-            onPress = {this._getRecipes}
+            onPress = {this._getUpdatedState}
           />
         </View>
       </View>
@@ -165,4 +176,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
   },
+});
+
+const mapStateToProps = (state) => ({
+  recipes: state.recipes
 })
+
+export default connect(mapStateToProps, {
+  recipeAdded,
+})(RecipePicker);
