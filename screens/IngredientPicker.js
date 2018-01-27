@@ -1,6 +1,7 @@
 import React from 'react';
 import { StackNavigator} from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import Drawer from 'react-native-drawer';
 import {
   StyleSheet,
@@ -22,13 +23,14 @@ import {
 
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
+import { fetchData } from '../actions/Actions';
 
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
 var backupData, immutableData;
 
-export default class IngredientPicker extends React.Component {
+class IngredientPicker extends React.Component {
   constructor(props) {
     super(props);
     this.animatedValue = new Animated.Value(0);
@@ -133,15 +135,7 @@ export default class IngredientPicker extends React.Component {
 
   _getRecipes = () => {
     const { navigate } = this.props.navigation;
-    fetch("http://rns203-8.cs.stolaf.edu:28488", {
-      method: "POST",
-      body: JSON.stringify(selectedIngredients),
-      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
-    })
-    .then((res) => {
-      console.log(res)
-      return res.json()
-    })
+    this.props.fetchData(selectedIngredients);
     navigate(
       'RecipePicker', {
         numIngredients: numSelected,
@@ -303,3 +297,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   }
 });
+
+function mapStateToProps (state) {
+  return {
+    recipes: state.recipes,
+    recipesIsFetching: state.recipesIsFetching
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    fetchData: (selectedIngredients) => dispatch(fetchData(selectedIngredients))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(IngredientPicker);

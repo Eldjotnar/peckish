@@ -4,7 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Platform, View } from 'react-native';
 import { AppLoading, Font } from 'expo';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk'
 
 import IngredientPicker from './screens/IngredientPicker';
 import Test from './screens/Test';
@@ -92,7 +93,7 @@ const Tabs = TabNavigator({
 });
 
 export default class App extends React.Component {
-  store = createStore(Reducer);
+  store = createStore(Reducer, applyMiddleware(thunk));
 
   constructor(props) {
     super(props);
