@@ -64,6 +64,7 @@ class RecipePicker extends React.Component {
       'Recipe', {
         name: item.rname,
         source: item.url,
+        ingredients: item.ingredients,
       },
     );
   }
