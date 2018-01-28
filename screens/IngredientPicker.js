@@ -24,11 +24,16 @@ import {
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
 import { fetchData, fetchIngredients } from '../actions/Actions';
+import {
+  sortIngredientsByName,
+  sortIngredientsByCategory,
+  sortIngredientsByFrequency,
+  searchForIngredient,
+} from '../actions/sortActions';
 
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
 var selectedIngredients = {};
-var backupData, immutableData;
 
 class IngredientPicker extends React.Component {
   constructor(props) {
@@ -39,39 +44,7 @@ class IngredientPicker extends React.Component {
       keyboardShowing: false,
       reRenderList: false,
       showPopup: 'none',
-      data: [
-        {key: 'elbow macaroni'},
-        {key: 'butter'},
-        {key: 'dijon mustard'},
-        {key: 'cayenne pepper'},
-        {key: 'shredded sharp cheddar'},
-        {key: 'flour'},
-        {key: 'tomatoes'},
-        {key: 'dry yeast'},
-        {key: 'mozarella'},
-        {key: 'basil'},
-        {key: 'oregano'},
-        {key: 'white onions'},
-        {key: 'garlic'},
-        {key: 'pepperoni'},
-        {key: 'mushrooms'},
-        {key: 'tomato sauce'},
-        {key: 'mango'},
-        {key: 'apples'},
-        {key: 'rice'},
-        {key: 'sausages'},
-        {key: 'bell peppers'},
-        {key: 'arugala'},
-        {key: 'bamboo shoots'},
-        {key: 'cauliflower'},
-        {key: 'camerbert'},
-        {key: 'bacon'},
-        {key: 'ricotta'},
-        {key: 'Spaghetti'},
-        {key: 'Cheese'},
-        {key: 'Marinara'},
-        {key: 'POTATOES'},
-      ]
+      data: []
     }
   }
 
@@ -83,7 +56,7 @@ class IngredientPicker extends React.Component {
   // loads the font on initial load and creates a listener for the keyboard
   componentWillMount() {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
-    this._createBackupData();
+    this.props.fetchIngredients();
   }
 
   // displays the popup and animates it in
@@ -166,7 +139,7 @@ class IngredientPicker extends React.Component {
   // sorts the ingredients alphabetically and refreshes the
   // displayed buttons
   _sortAlphabetically = () => {
-    this.state.data.sort(function(a,b){return a.key > b.key});
+    this.props.sortIngredientsByName();
     this.setState({reRenderList:true});
     this._drawer.close();
   }
@@ -174,7 +147,7 @@ class IngredientPicker extends React.Component {
   // sorts the ingredients by frequency in each recipe
   // and refreshes the displayed buttons
   _sortByFrequency = () => {
-    //
+    this.props.sortIngredientsByFrequency();
     this.setState({reRenderList:true});
     this._drawer.close();
   }
@@ -182,28 +155,14 @@ class IngredientPicker extends React.Component {
   // sorts the ingredients by category and
   // refreshes the displayed buttons
   _sortByCategory = () => {
-    //
+    this.props.sortIngredientsByCategory();
     this.setState({reRenderList:true});
     this._drawer.close();
   }
 
-  // creates a backup copy of ingredient list so that the search
-  // and alphabitization features can be reverted
-  _createBackupData = () => {
-    backupData = this.state.data;
-    immutableData = backupData;
-  }
-
   // searches the data for ingredients that contain that specific string
   _searchForIngredient = (input) => {
-    var mySearchData = backupData.filter(s => s.key.includes(input));
-    this.setState({data: mySearchData});
-    backupData = immutableData;
-  }
-
-  _testServer = () => {
-    this.props.fetchIngredients();
-    console.log("I got: " + this.props.ingredients)
+    this.props.searchForIngredient(input);
   }
 
   render() {
@@ -220,9 +179,9 @@ class IngredientPicker extends React.Component {
         content={
           <View style={styles.sideDrawerMain}>
             <Text style={[styles.drawerText,{marginTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
-              <Text style={styles.drawerText} onPress={() => console.log("hi")}>Name</Text>
+              <Text style={styles.drawerText} onPress={this._sortAlphabetically}>Name</Text>
               <Text style={styles.drawerText} onPress={() => console.log("hi")}>Category</Text>
-              <Text style={styles.drawerText} onPress={this._testServer}>Test</Text>
+              <Text style={styles.drawerText} onPress={this._testServer}>Frequency</Text>
           </View>
         }>
         <View style={styles.main}>
@@ -237,7 +196,7 @@ class IngredientPicker extends React.Component {
             rightIcon="ios-search"
             rightAction={this._rightAction} />
           <FlatList
-            data={this.state.data}
+            data={this.props.ingredients[0]}
             numColumns={2}
             keyboardShouldPersistTaps={"always"}
             extraData={this.state.reRenderList}
@@ -330,6 +289,10 @@ function mapDispatchToProps (dispatch) {
   return {
     fetchIngredients: () => dispatch(fetchIngredients()),
     fetchData: (selectedIngredients) => dispatch(fetchData(selectedIngredients)),
+    sortIngredientsByName: () => dispatch(sortIngredientsByName()),
+    sortIngredientsByCategory: () => dispatch(sortIngredientsByCategory()),
+    sortIngredientsByFrequency: () => dispatch(sortIngredientsByFrequency()),
+    searchForIngredient: (input) => dispatch(searchForIngredient(input)),
   }
 }
 

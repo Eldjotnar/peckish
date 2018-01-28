@@ -6,6 +6,7 @@ const initState = {
   recipesFetched: false,
   recipesIsFetching: false,
   error: false,
+  backupIngredients: [],
 }
 
 const RecipeReducer = (state = initState, action) => {
@@ -36,12 +37,16 @@ const RecipeReducer = (state = initState, action) => {
         ingredientsIsFetching: true
       }
     case 'FETCHING_INGREDIENTS_SUCCESS':
-      //console.log(action.data.ingredientnames)
+      var myArray = []
+      for (var i = 0; i < action.data.ingredientnames.length; i++) {
+        myArray.push({key: action.data.ingredientnames[i]})
+      }
       return {
         ...state,
         ingredientsIsFetching: true,
         ingredientsFetched: true,
-        ingredients: [...state.ingredients, action.data.ingredientnames]
+        ingredients: [...state.ingredients, myArray],
+        backupIngredients: [...state.backupIngredients, myArray],
       }
     case 'FETCHING_INGREDIENTS_FAILURE':
       return {
@@ -49,6 +54,33 @@ const RecipeReducer = (state = initState, action) => {
         recipesIsFetching: false,
         error: true,
       }
+    case 'SORT_INGREDIENTS_BY_CATEGORY':
+      return state
+    case 'SORT_INGREDIENTS_BY_FREQUENCY':
+      return state
+    case 'SORT_INGREDIENTS_BY_NAME':
+      var alphabetState = []
+      alphabetState.push(state.ingredients[0].sort(function(a,b){return a.key > b.key}));
+      return {
+        ...state,
+        ingredients: alphabetState,
+      }
+    case 'SEARCH_FOR_INGREDIENT':
+      //console.log(state.ingredients[0])
+      searchedState = []
+      searchedState.push(state.backupIngredients[0].filter(s => s.key.includes(action.input)))
+      return {
+        ...state,
+        ingredients: searchedState,
+      }
+    case 'SORT_RECIPES_BY_NAME':
+      return state
+    case 'SORT_RECIPES_BY_RATING':
+      return state
+    case 'SORT_RECIPES_BY_SOURCE':
+      return state
+    case 'SORT_RECIPES_BY_MISSING':
+      return state
     default:
       return state;
   }

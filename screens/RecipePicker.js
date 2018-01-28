@@ -62,6 +62,10 @@ class RecipePicker extends React.Component {
     );
   }
 
+  _testFunction = () => {
+    console.log(this.props.recipes[0])
+  }
+
   // removes header formed by navigation
   static navigationOptions = {
     header: null
@@ -80,7 +84,7 @@ class RecipePicker extends React.Component {
             <Text style={styles.drawerText} onPress={() => console.log(this._searchForIngredient('t'))}>Ingredients Missing</Text>
             <Text style={styles.drawerText} onPress={() => console.log("hi")}>Name</Text>
             <Text style={styles.drawerText} onPress={() => console.log("hi")}>Rating</Text>
-            <Text style={styles.drawerText} onPress={() => console.log("hi")}>Source</Text>
+            <Text style={styles.drawerText} onPress={this._testFunction}>test</Text>
           </View>
         }>
         <View style={styles.main}>
