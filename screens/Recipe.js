@@ -13,6 +13,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+let recipeIngredients = {}
+
 export default class Recipe extends React.Component {
   constructor(props){
     super(props);
@@ -24,6 +26,18 @@ export default class Recipe extends React.Component {
 
   getNavigationParams() {
     return this.props.navigation.state.params || {}
+  }
+
+  formatIngredients() {
+    formattedIngredients = []
+    arrSize = this.getNavigationParams().ingredients.ingredientnames.length
+    for(var i=0; i < arrSize; i++){
+      tmp = {}
+      tmp['key'] = this.getNavigationParams().ingredients.ingredientnames[i]
+      tmp['amount'] = this.getNavigationParams().ingredients.amounts[i]
+      formattedIngredients.push(tmp)
+    }
+    return formattedIngredients
   }
 
   render(){
@@ -51,7 +65,7 @@ export default class Recipe extends React.Component {
           <ScrollView>
             <Text style={styles.subText}>Ingredients</Text>
             <FlatList
-              data={[{'amount':'1/2 tsp', key: 'salt'}, {'amount':'2 cups', key: 'elbow macaroni'}, {'amount':'2 Tbsp',key: 'butter'}, {'amount':'1/2 tsp',key:'dijon mustard'}, {'amount':'1 pinch of',key:'cayenne pepper'}, {'amount':'1.5 cups', key:'shredded sharp cheddar'}]}
+              data={this.formatIngredients()}
               renderItem={({item}) => <Text style={styles.listText}>{item.amount} {item.key}</Text>}
               scrollEnabled={false}
             />
