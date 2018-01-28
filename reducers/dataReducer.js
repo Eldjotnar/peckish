@@ -77,8 +77,6 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'SORT_RECIPES_BY_NAME':
       var alphabetState = []
-      console.log("sorted by name:")
-      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
       alphabetState.push(state.backupRecipes[0].sort(function(a,b){return a.rname > b.rname}));
       return {
         ...state,
@@ -86,8 +84,6 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'SORT_RECIPES_BY_RATING':
       var ratingState = []
-      console.log("sorted by rating:")
-      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
       ratingState.push(state.backupRecipes[0].sort(function(a,b){return a.rating > b.rating}));
       return {
         ...state,
@@ -95,8 +91,6 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'SORT_RECIPES_BY_SOURCE':
       var sourceState = []
-      console.log("sorted by source:")
-      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
       sourceState.push(state.backupRecipes[0].sort(function(a,b){return a.source > b.source}));
       return {
         ...state,
