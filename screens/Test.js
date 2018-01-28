@@ -24,11 +24,11 @@ export default class Test extends React.Component {
 
   async componentWillMount(){
     const { status } = await Permissions.askAsync(Permissions.CAMERA)
-    this.setState({cameraPermission: status === 'allowed'})
+    this.setState({cameraPermission: status === 'granted'})
   }
 
   _handleBarCode = ({type, data}) => {
-    console.log(`Barcode read of type ${type} and data content: ${scanned}`)
+    console.log(`Barcode read of type ${type} and data content: ${data} scanned.`)
   }
 
 
@@ -50,7 +50,7 @@ export default class Test extends React.Component {
             translucent={false}
           />
           <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
-          <View>
+          <View style={{ flex: 1}}>
               <BarCodeScanner
                 onBarCodeRead = {this._handleBarCode}
                 style={StyleSheet.absoluteFill}
