@@ -40,6 +40,14 @@ export default class Recipe extends React.Component {
     return formattedIngredients
   }
 
+  formatRecipe() {
+    let steps = this.getNavigationParams().steps
+    if(steps.substring(0,12) === "Directions: ") {
+      steps = steps.slice(12)
+    }
+    return steps
+  }
+
   render(){
     const { goBack } = this.props.navigation;
     return (
@@ -50,7 +58,7 @@ export default class Recipe extends React.Component {
         />
         <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
         <View style={styles.recipeImageContainer}>
-          <Image source={require('../assets/images/macandcheese.jpg')} style={styles.recipeImage} />
+          <Image source={{uri: this.getNavigationParams().imageurl}} style={styles.recipeImage} />
             <TouchableOpacity onPress={() => goBack()} style={styles.backArrow}>
               <Ionicons name="ios-arrow-back" style={{color: 'white'}} size={30}/>
             </TouchableOpacity>
@@ -59,8 +67,8 @@ export default class Recipe extends React.Component {
           <Text style={styles.titleText}>{this.getNavigationParams().name}</Text>
           <View style={styles.infoHeader}>
             <Text style={styles.regularText}>{this.getNavigationParams().source}</Text>
-            <Text style={styles.regularText}>Yield: 4</Text>
-            <Text style={styles.regularText}>Time: 60 minutes</Text>
+            <Text style={styles.regularText}>Yield: {this.getNavigationParams().yield}</Text>
+            <Text style={styles.regularText}>Time: {this.getNavigationParams().cooktime}</Text>
           </View>
           <ScrollView>
             <Text style={styles.subText}>Ingredients</Text>
@@ -70,11 +78,7 @@ export default class Recipe extends React.Component {
               scrollEnabled={false}
             />
           <Text style={[styles.subText, {marginTop: 10}]}>Instructions</Text>
-          <Text style={[styles.regularText, {marginTop: 10}]}>Fill the skillet two-thirds full of water, add the salt, and bring to a boil over medium-high heat.</Text>
-          <Text style={[styles.regularText, {marginTop: 10}]}>Add the macaroni, turn the heat to medium, and cook, stirring occasionally, until just shy of al dente. This should take about 10 minutes, but check the pasta package for recommended cooking times and aim for the lower end if a range is given. (The macaroni will continue to cook a bit in the sauce.) When the macaroni is ready, biting into a piece should reveal a very thin core of uncooked pasta.</Text>
-          <Text style={[styles.regularText, {marginTop: 10}]}>Drain the macaroni and return it to the skillet. Turn the heat to low. Add the butter and stir until it melts.</Text>
-          <Text style={[styles.regularText, {marginTop: 10}]}>Add the evaporated milk, mustard, and cayenne and stir well to combine. Add the cheese in three batches, stirring frequently as each batch is added and waiting until the cheese has melted before adding the next batch. After about 5 minutes total, the sauce will be smooth and noticeably thicker.</Text>
-          <Text style={[styles.regularText, {marginTop: 10}]}>Serve hot. Leftovers can be refrigerated in a covered container for up to 2 days.</Text>
+          <Text style={[styles.regularText, {marginTop: 10}]}>{this.formatRecipe()}</Text>
           <View style={{height:20}}></View>
         </ScrollView>
         </View>
