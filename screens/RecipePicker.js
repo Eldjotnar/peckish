@@ -69,6 +69,7 @@ class RecipePicker extends React.Component {
         imageurl: item.imageurl,
         yield: item.serving,
         cooktime: item.cooktime,
+        url: item.url,
       },
     );
   }

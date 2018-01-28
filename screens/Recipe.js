@@ -67,6 +67,8 @@ export default class Recipe extends React.Component {
           <Text style={styles.titleText}>{this.getNavigationParams().name}</Text>
           <View style={styles.infoHeader}>
             <Text style={styles.regularText}>{this.getNavigationParams().source}</Text>
+            <Text style={styles.regularText}>
+            </Text>
             <Text style={styles.regularText}>Yield: {this.getNavigationParams().yield}</Text>
             <Text style={styles.regularText}>Time: {this.getNavigationParams().cooktime}</Text>
           </View>
@@ -80,6 +82,7 @@ export default class Recipe extends React.Component {
           <Text style={[styles.subText, {marginTop: 10}]}>Instructions</Text>
           <Text style={[styles.regularText, {marginTop: 10}]}>{this.formatRecipe()}</Text>
           <View style={{height:20}}></View>
+          <Text style={styles.regularText}>{this.getNavigationParams().url}</Text>
         </ScrollView>
         </View>
       </View>
