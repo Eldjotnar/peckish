@@ -68,7 +68,7 @@ class RecipePicker extends React.Component {
     <RecipeCard
       title={item.rname}
       imagePath={{uri: item.imageurl}}
-      source={item.url}
+      source={item.source}
       missing={item.missing}
       recipeAction={() => this._generateRecipePage({item})}
     />
@@ -81,8 +81,13 @@ class RecipePicker extends React.Component {
     navigate(
       'Recipe', {
         name: item.rname,
-        source: item.url,
+        source: item.source,
         ingredients: item.ingredients,
+        steps: item.steps,
+        imageurl: item.imageurl,
+        yield: item.serving,
+        cooktime: item.cooktime,
+        url: item.url,
       },
     );
   }
