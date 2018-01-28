@@ -106,6 +106,8 @@ class IngredientPicker extends React.Component {
     />
   );
 
+  // navigates to the recipe picker page and requests
+  // recipes based on the selected ingredients
   _getRecipes = () => {
     const { navigate } = this.props.navigation;
     this.props.fetchData(selectedIngredients);
@@ -180,8 +182,8 @@ class IngredientPicker extends React.Component {
           <View style={styles.sideDrawerMain}>
             <Text style={[styles.drawerText,{marginTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
               <Text style={styles.drawerText} onPress={this._sortAlphabetically}>Name</Text>
-              <Text style={styles.drawerText} onPress={() => console.log("hi")}>Category</Text>
-              <Text style={styles.drawerText} onPress={this._testServer}>Frequency</Text>
+              <Text style={styles.drawerText} onPress={this._sortByCategory}>Category</Text>
+              <Text style={styles.drawerText} onPress={this._sortByFrequency}>Frequency</Text>
           </View>
         }>
         <View style={styles.main}>

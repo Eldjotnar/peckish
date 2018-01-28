@@ -14,9 +14,15 @@ import {
   FlatList,
   Button,
   Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  TextInput,
 } from 'react-native';
 
 import { fetchData } from '../actions/Actions';
+import {
+  searchForRecipe
+} from '../actions/sortActions';
 
 import { TopBar } from '../components/TopBar';
 import { RecipeCard } from '../components/RecipeCard';
@@ -25,14 +31,27 @@ var {width, height} = Dimensions.get('window');
 class RecipePicker extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      textSearchHeight: 0,
+      keyboardShowing: false,
+    }
   }
 
   componentWillMount() {
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
 
   // opens the drawer when the user selects the menu
   _leftAction = () => {
     this._drawer.open();
+  }
+
+  // automatically hides the search bar if the user closes the keyboard
+  // without clicking the search button
+  _keyboardDidHide = () => {
+    this.setState({
+      textSearchHeight: 0,
+    })
   }
 
   // tells the flatlist to index by recipe id
@@ -63,8 +82,23 @@ class RecipePicker extends React.Component {
     );
   }
 
-  _testFunction = () => {
-    console.log(this.props.recipes[0])
+  // opens the keyboard and displays the search bar
+  // hides the keyboard and search bar on second click
+  _rightAction = () => {
+    if(!this.state.keyboardShowing){
+      this.refs.searchBar.focus();
+      this.setState({
+        textSearchHeight: 50,
+        keyboardShowing: true,
+      })
+    } else {
+      Keyboard.dismiss();
+      this.setState({keyboardShowing: false, textSearchHeight: 0})
+    }
+  }
+
+  _searchForRecipe = (input) => {
+    this.props.searchForRecipe(input)
   }
 
   // removes header formed by navigation
@@ -82,10 +116,10 @@ class RecipePicker extends React.Component {
         content={
           <View style={styles.sideDrawerMain}>
             <Text style={[styles.drawerText,{marginTop: height/50, fontSize:16}]}>Sort Ingredients By</Text>
-            <Text style={styles.drawerText} onPress={() => console.log(this._searchForIngredient('t'))}>Ingredients Missing</Text>
-            <Text style={styles.drawerText} onPress={() => console.log("hi")}>Name</Text>
-            <Text style={styles.drawerText} onPress={() => console.log("hi")}>Rating</Text>
-            <Text style={styles.drawerText} onPress={this._testFunction}>test</Text>
+            <Text style={styles.drawerText} onPress={this._sortByMissing}>Ingredients Missing</Text>
+            <Text style={styles.drawerText} onPress={this._sortAlphabetically}>Name</Text>
+            <Text style={styles.drawerText} onPress={this._sortByRating}>Rating</Text>
+            <Text style={styles.drawerText} onPress={this._sortBySource}>Source</Text>
           </View>
         }>
         <View style={styles.main}>
@@ -113,6 +147,14 @@ class RecipePicker extends React.Component {
             renderItem={this._renderItem}
             keyExtractor={this._keyExtractor}
           />
+          <KeyboardAvoidingView behavior="padding">
+            <TextInput
+              style={[styles.textInput, {height: this.state.textSearchHeight}]}
+              onSubmitEditing={this._keyboardDidHide}
+              autoCapitalize={'none'}
+              onChangeText={(text) => this._searchForRecipe(text)}
+              ref='searchBar' />
+          </KeyboardAvoidingView>
         </View>
       </Drawer>
     );
@@ -136,6 +178,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 10,
+  },
+  textInput: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    fontFamily: 'multicolore',
+    justifyContent: 'center',
+    paddingLeft: width/20,
+    fontSize: 16,
   },
   normalText: {
     fontSize: 18,
@@ -167,7 +217,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchData: () => dispatch(fetchData())
+    fetchData: () => dispatch(fetchData()),
+    searchForRecipe: (input) => dispatch(searchForRecipe(input))
   }
 }
 

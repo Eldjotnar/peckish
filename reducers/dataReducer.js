@@ -7,6 +7,7 @@ const initState = {
   recipesIsFetching: false,
   error: false,
   backupIngredients: [],
+  backupRecipes: [],
 }
 
 const RecipeReducer = (state = initState, action) => {
@@ -22,7 +23,8 @@ const RecipeReducer = (state = initState, action) => {
         ...state,
         recipesIsFetching: false,
         recipesFetched: true,
-        recipes: [...state.recipes, action.data]
+        recipes: [...state.recipes, action.data],
+        backupRecipes: [...state.backupRecipes, action.data],
       }
     case 'FETCHING_RECIPES_FAILURE':
       return {
@@ -81,6 +83,13 @@ const RecipeReducer = (state = initState, action) => {
       return state
     case 'SORT_RECIPES_BY_MISSING':
       return state
+    case 'SEARCH_FOR_RECIPE':
+      searchedRecipes = []
+      searchedRecipes.push(state.backupRecipes[0].filter(s => s.rname.toLowerCase().includes(action.input)))
+      return {
+        ...state,
+        recipes: searchedRecipes,
+      }
     default:
       return state;
   }
