@@ -142,7 +142,7 @@ class IngredientPicker extends React.Component {
   // displayed buttons
   _sortAlphabetically = () => {
     this.props.sortIngredientsByName();
-    this.setState({reRenderList:true});
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
     this._drawer.close();
   }
 
@@ -150,7 +150,7 @@ class IngredientPicker extends React.Component {
   // and refreshes the displayed buttons
   _sortByFrequency = () => {
     this.props.sortIngredientsByFrequency();
-    this.setState({reRenderList:true});
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
     this._drawer.close();
   }
 
@@ -158,7 +158,7 @@ class IngredientPicker extends React.Component {
   // refreshes the displayed buttons
   _sortByCategory = () => {
     this.props.sortIngredientsByCategory();
-    this.setState({reRenderList:true});
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
     this._drawer.close();
   }
 

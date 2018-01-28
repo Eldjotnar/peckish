@@ -21,7 +21,11 @@ import {
 
 import { fetchData } from '../actions/Actions';
 import {
-  searchForRecipe
+  searchForRecipe,
+  sortRecipesByName,
+  sortRecipesByRating,
+  sortRecipesBySource,
+  sortRecipesByMissing,
 } from '../actions/sortActions';
 
 import { TopBar } from '../components/TopBar';
@@ -34,6 +38,7 @@ class RecipePicker extends React.Component {
     this.state = {
       textSearchHeight: 0,
       keyboardShowing: false,
+      reRenderList: false,
     }
   }
 
@@ -101,6 +106,30 @@ class RecipePicker extends React.Component {
     this.props.searchForRecipe(input)
   }
 
+  _sortByMissing = () => {
+    this.props.sortRecipesByMissing();
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
+    this._drawer.close();
+  }
+
+  _sortAlphabetically = () => {
+    this.props.sortRecipesByName();
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
+    this._drawer.close();
+  }
+
+  _sortByRating = () => {
+    this.props.sortRecipesByRating();
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
+    this._drawer.close();
+  }
+
+  _sortBySource = () => {
+    this.props.sortRecipesBySource();
+    this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
+    this._drawer.close();
+  }
+
   // removes header formed by navigation
   static navigationOptions = {
     header: null
@@ -145,6 +174,7 @@ class RecipePicker extends React.Component {
           <FlatList
             data={this.props.recipes[0]}
             renderItem={this._renderItem}
+            extraData={this.state.reRenderList}
             keyExtractor={this._keyExtractor}
           />
           <KeyboardAvoidingView behavior="padding">
@@ -218,7 +248,11 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     fetchData: () => dispatch(fetchData()),
-    searchForRecipe: (input) => dispatch(searchForRecipe(input))
+    searchForRecipe: (input) => dispatch(searchForRecipe(input)),
+    sortRecipesByName: () => dispatch(sortRecipesByName()),
+    sortRecipesBySource: () => dispatch(sortRecipesBySource()),
+    sortRecipesByMissing: () => dispatch(sortRecipesByMissing()),
+    sortRecipesByRating: () => dispatch(sortRecipesByRating()),
   }
 }
 

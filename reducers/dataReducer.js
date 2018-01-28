@@ -76,13 +76,39 @@ const RecipeReducer = (state = initState, action) => {
         ingredients: searchedState,
       }
     case 'SORT_RECIPES_BY_NAME':
-      return state
+      var alphabetState = []
+      console.log("sorted by name:")
+      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
+      alphabetState.push(state.backupRecipes[0].sort(function(a,b){return a.rname > b.rname}));
+      return {
+        ...state,
+        recipes: alphabetState,
+      }
     case 'SORT_RECIPES_BY_RATING':
-      return state
+      var ratingState = []
+      console.log("sorted by rating:")
+      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
+      ratingState.push(state.backupRecipes[0].sort(function(a,b){return a.rating > b.rating}));
+      return {
+        ...state,
+        recipes: ratingState
+      }
     case 'SORT_RECIPES_BY_SOURCE':
-      return state
+      var sourceState = []
+      console.log("sorted by source:")
+      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
+      sourceState.push(state.backupRecipes[0].sort(function(a,b){return a.source > b.source}));
+      return {
+        ...state,
+        recipes: sourceState
+      }
     case 'SORT_RECIPES_BY_MISSING':
-      return state
+      var missingState = []
+      missingState.push(state.backupRecipes[0].sort(function(a,b){return a.missing > b.missing}));
+      return {
+        ...state,
+        recipes: missingState
+      }
     case 'SEARCH_FOR_RECIPE':
       searchedRecipes = []
       searchedRecipes.push(state.backupRecipes[0].filter(s => s.rname.toLowerCase().includes(action.input)))
