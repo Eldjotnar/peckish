@@ -19,6 +19,7 @@ export function getRecipesFailure() {
 }
 
 export function fetchRecipes(selectedIngredients) {
+  console.log("here")
   return (dispatch) => {
     dispatch(getRecipes(selectedIngredients))
     fetch("http://rns203-8.cs.stolaf.edu:28488", {

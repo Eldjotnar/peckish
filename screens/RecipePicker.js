@@ -177,20 +177,20 @@ class RecipePicker extends React.Component {
             rightIcon="ios-search"
             rightAction={this._rightAction} />
           {
-            this.props.recipesIsFetching &&
+            this.props.recipes.recipesIsFetching &&
               <View style={styles.textContainer}>
                 <ActivityIndicator size="large" color="#d03d67" />
               </View>
           }
           {
-            !this.props.recipesFetched &&
+            !this.props.recipes.recipesFetched &&
              <View style={styles.textContainer}>
                <Text style={styles.normalText}>It looks like you haven't selected any ingredients yet!</Text>
                <Text style={[styles.normalText, {fontSize: 14}]}>Please select at least 4 ingredients to generate recipes</Text>
              </View>
           }
           <FlatList
-            data={this.props.recipes[0]}
+            data={this.props.recipes.recipes}
             renderItem={this._renderItem}
             extraData={this.state.reRenderList}
             keyExtractor={this._keyExtractor}
@@ -258,14 +258,12 @@ const styles = StyleSheet.create({
 function mapStateToProps (state) {
   return {
     recipes: state.recipes,
-    recipesFetched: state.recipesFetched,
-    recipesIsFetching: state.recipesIsFetching
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    fetchData: () => dispatch(fetchData()),
+    fetchRecipes: () => dispatch(fetchRecipes()),
     searchForRecipe: (input) => dispatch(searchForRecipe(input)),
     sortRecipesByName: () => dispatch(sortRecipesByName()),
     sortRecipesBySource: () => dispatch(sortRecipesBySource()),
