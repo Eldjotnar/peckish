@@ -53,7 +53,7 @@ export default class Test extends React.Component {
       setTimeout(this._helperForHandleBarCode, 5000) //enforces 5 second breaks between repeated requests
     }
     else {
-      console.log("Please wait. One barcode is currently being procesesed.")
+      console.log("Please wait. Only one scan every 5 seconds allowed.")
     }
   }
 
