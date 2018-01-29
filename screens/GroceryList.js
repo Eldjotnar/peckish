@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    groceries: state.groceries
+    groceries: state.recipes
   }
 }
 
