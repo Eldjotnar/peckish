@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import {BarCodeScanner, Permissions} from 'expo'
+// import { Ionicons } from '@expo/vector-icons';
 
 let barcodeInProcess = false
 
@@ -68,6 +69,16 @@ export default class Test extends React.Component {
     this.setState({modalVisible: false})
   }
 
+  _handleYesToProduct(){
+    //Match up with known ingredients
+    this._closeModal()
+  }
+
+  _handleNoToProduct(){
+    //Scan again or manually input product
+    this._closeModal()
+  }
+
   render(){
     const { navigate } = this.props.navigation;
     const { cameraPermission } = this.state;
@@ -91,20 +102,26 @@ export default class Test extends React.Component {
             onRequestClose={() => this._closeModal()}
           >
             <View style={styles.modalContainer}>
+            <View>
+            </View>
               <View style={styles.innerContainer}>
-                <Text>Is this the product you scanned?</Text>
+                <Text style={styles.popupText}>Is this the product</Text>
+                <Text style={styles.popupText}>you scanned?</Text>
                 <Button
-                  onPress={() => this._closeModal()}
+                  style={styles.confirmationButtons}
+                  onPress={() => this._handleYesToProduct()}
                   title="Yes"
+                  color="green"
                 ></Button>
                 <Button
-                  onPress={() => this._closeModal()}
+                  style={styles.confirmationButtons}
+                  onPress={() => this._handleNoToProduct()}
                   title="No"
+                  color="red"
                 ></Button>
               </View>
             </View>
           </Modal>
-          <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
           <View style={{ flex: 1}}>
               <BarCodeScanner
                 onBarCodeRead = {this._handleBarCode}
@@ -129,6 +146,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '60%',
   },
+  modalImage: {
+    position: 'absolute',
+    top: 10,
+    left: 150,
+    width: '20%',
+    height: '10%',
+  },
   modalContainer: {
     flex: 1,
     backgroundColor: '#191e45',
@@ -137,5 +161,14 @@ const styles = StyleSheet.create({
   innerContainer: {
     backgroundColor: '#191e45',
     alignItems: 'center',
+  },
+  popupText: {
+    fontFamily: 'multicolore',
+    fontSize: 18,
+    color: 'white',
+  },
+  confirmationButtons: {
+    alignItems: 'center',
+    margin: 20,
   },
 });
