@@ -18,7 +18,7 @@ import {
 
 import { TopBar } from '../components/TopBar';
 import { GroceryListItem } from '../components/GroceryListItem';
-import { addCustomToGroceryList } from '../actions/Actions';
+import { addCustomToGroceryList } from '../actions/GroceryActions';
 var {width, height} = Dimensions.get('window');
 
 class GroceryList extends React.Component {
@@ -103,7 +103,7 @@ class GroceryList extends React.Component {
           rightIcon="ios-search"
           rightAction={() => console.log(this.state.data)} />
         <FlatList
-          data={this.props.groceryList}
+          data={this.props.groceries.groceryList}
           renderItem={this._renderItem}
         />
       </View>
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    groceryList: state.groceryList
+    groceries: state.recipes
   }
 }
 
