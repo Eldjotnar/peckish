@@ -22,6 +22,7 @@ export default class Test extends React.Component {
     this.state = {
       cameraPermission: null,
       modalVisible: false,
+      productName:"",
       lookupMessage: "",
     }
   }
@@ -43,16 +44,29 @@ export default class Test extends React.Component {
     if(barcodeInProcess === false){
       barcodeInProcess = true
       console.log(`Barcode read of type ${type} and data content: ${data} scanned.`)
-      if(type === "EAN_13"){
+      if(type === "EAN_13" || type === "CODE_128"){
         fetch(`https://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=${data}&facet=gpc_s_nm&facet=brand_nm&facet=owner_nm`)
         .then((res) => {
           return res.json()
         })
         .then((data) => {
           try{
-          productName = data.records[0].fields.gtin_nm
-          brandName = data.records[0].fields.brand_nm
-          this.setState({lookupMessage: `Is ${brandName}:${productName}\nthe product you scanned?`})
+            let undefDummy;
+            productName = data.records[0].fields.gtin_nm
+            brandName = data.records[0].fields.brand_nm
+            this.setState({productName: `${productName}`})
+            if(brandName == undefDummy){
+              this.setState({lookupMessage: `Is ${productName}\nthe product you scanned?`})
+            }
+            else if(productName == undefDummy){
+              this.setState({lookupMessage: `Is ${brandName}\nthe product brand\n you scanned?`})
+            }
+            else if(productName == undefDummy && brandName == undefDummy) {
+              throw err;
+            }
+            else{
+              this.setState({lookupMessage: `Is ${brandName}:${productName}\nthe product you scanned?`})
+            }
           }
           catch(err){
             this.setState({lookupMessage: "No record found\nfor this product"})
@@ -81,6 +95,18 @@ export default class Test extends React.Component {
   _handleYesToProduct(){
     //Match up with known ingredients
     this._closeModal()
+    fetch("http://rns203-8.cs.stolaf.edu:28488/lookupproduct", {
+      method: "POST",
+      body: JSON.stringify({type:"lookupproduct", "lookupproduct": `${this.state.productName}`}),
+      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((err) => console.log('ERROR: ' + err))
   }
 
   _handleNoToProduct(){
