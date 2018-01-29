@@ -22,6 +22,7 @@ export default class Test extends React.Component {
     this.state = {
       cameraPermission: null,
       modalVisible: false,
+      lookupMessage: "",
     }
   }
   static navigationOptions = {
@@ -48,7 +49,15 @@ export default class Test extends React.Component {
           return res.json()
         })
         .then((data) => {
-          console.log(data)
+          try{
+          productName = data.records[0].fields.gtin_nm
+          brandName = data.records[0].fields.brand_nm
+          this.setState({lookupMessage: `Is ${brandName}:${productName}\nthe product you scanned?`})
+          }
+          catch(err){
+            this.setState({lookupMessage: "No record found\nfor this product"})
+            console.log("Item not found in pod.opendatasoft.com database. Otherwise an unexpected error occured.")
+        }
         })
       }
       else {
@@ -105,8 +114,7 @@ export default class Test extends React.Component {
             <View>
             </View>
               <View style={styles.innerContainer}>
-                <Text style={styles.popupText}>Is this the product</Text>
-                <Text style={styles.popupText}>you scanned?</Text>
+                <Text style={styles.popupText}>{this.state.lookupMessage}</Text>
                 <View style={styles.modalButtons}>
                   <TouchableOpacity
                     onPress={() => this._handleYesToProduct()}
