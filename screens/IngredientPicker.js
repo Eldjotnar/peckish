@@ -23,7 +23,8 @@ import {
 
 import { IngredientButton } from '../components/IngredientButton';
 import { TopBar } from '../components/TopBar';
-import { fetchData, fetchIngredients } from '../actions/Actions';
+import { fetchRecipes } from '../actions/RecipeActions';
+import { fetchIngredients } from '../actions/IngredientActions';
 import {
   sortIngredientsByName,
   sortIngredientsByCategory,
@@ -198,7 +199,7 @@ class IngredientPicker extends React.Component {
             rightIcon="ios-search"
             rightAction={this._rightAction} />
           <FlatList
-            data={this.props.ingredients[0]}
+            data={this.props.ingredients.ingredients}
             numColumns={2}
             keyboardShouldPersistTaps={"always"}
             extraData={this.state.reRenderList}

@@ -15,7 +15,9 @@ import {
 } from 'react-native';
 
 let recipeIngredients = {}
-import { fetchData, fetchIngredients, addToGroceryList } from '../actions/Actions';
+import { fetchRecipes } from '../actions/RecipeActions';
+import { fetchIngredients } from '../actions/IngredientActions';
+import { addToGroceryList } from '../actions/GroceryActions';
 
 class Recipe extends React.Component {
   constructor(props){

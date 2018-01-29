@@ -20,7 +20,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import { fetchData } from '../actions/Actions';
+import { fetchRecipes } from '../actions/RecipeActions';
 import {
   searchForRecipe,
   sortRecipesByName,

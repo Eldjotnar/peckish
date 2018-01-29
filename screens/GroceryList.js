@@ -18,7 +18,7 @@ import {
 
 import { TopBar } from '../components/TopBar';
 import { GroceryListItem } from '../components/GroceryListItem';
-import { addCustomToGroceryList } from '../actions/Actions';
+import { addCustomToGroceryList } from '../actions/GroceryActions';
 var {width, height} = Dimensions.get('window');
 
 class GroceryList extends React.Component {
