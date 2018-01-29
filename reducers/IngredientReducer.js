@@ -30,6 +30,17 @@ const IngredientReducer = (state = initState, action) => {
         recipesIsFetching: false,
         error: true,
       }
+      case 'SORT_INGREDIENTS_BY_CATEGORY':
+        return state
+      case 'SORT_INGREDIENTS_BY_FREQUENCY':
+        return state
+      case 'SORT_INGREDIENTS_BY_NAME':
+        var alphabetState = []
+        alphabetState.push(state.ingredients[0].sort(function(a,b){return a.key > b.key}));
+        return {
+          ...state,
+          ingredients: alphabetState,
+        }
     default:
       return state;
   }

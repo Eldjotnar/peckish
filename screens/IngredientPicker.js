@@ -60,6 +60,13 @@ class IngredientPicker extends React.Component {
     this.props.fetchIngredients();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(this.props.ingredients.ingredients !== nextProps.ingredients.ingredients ){
+      console.log("i updated ma")
+      console.log(this.props.ingredients.ingredients)
+    }
+    //console.log("here")
+  }
   // displays the popup and animates it in
   animate (easing) {
     this.setState({showPopup: 'flex'});
