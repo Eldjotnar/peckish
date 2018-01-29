@@ -33,6 +33,7 @@ export class GroceryListItem extends React.Component {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.titleText}>{this.props.text}</Text>
+          <Text style={styles.subText}>{this.props.amount}</Text>
         </View>
       </View>
     )
@@ -64,5 +65,9 @@ const styles = StyleSheet.create({
   titleText: {
     fontFamily: 'multicolore',
     fontSize: 20,
+  },
+  subText: {
+    fontFamily: 'comfortaa',
+    fontSize: 12,
   }
 });

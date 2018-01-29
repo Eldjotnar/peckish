@@ -34,7 +34,8 @@ class GroceryList extends React.Component {
 
   _renderItem = ({item}) => (
     <GroceryListItem
-      text={item.key} />
+      text={item.key}
+      amount={item.amount} />
   );
 
   render(){
