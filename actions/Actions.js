@@ -17,6 +17,20 @@ export function getIngredientsFailure(data) {
   }
 }
 
+export function addToGroceryList(data) {
+  return {
+    type: 'ADD_TO_GROCERY_LIST_FROM_RECIPE',
+    data
+  }
+}
+
+export function addCustomToGroceryList(data) {
+  return {
+    type: 'ADD_CUSTOM_TO_GROCERY_LIST',
+    data
+  }
+}
+
 export function fetchIngredients() {
   return (dispatch) => {
     dispatch(getIngredients())
@@ -31,9 +45,10 @@ export function fetchIngredients() {
   }
 }
 
-export function getData() {
+export function getData(selectedIngredients) {
   return {
-    type: 'FETCHING_RECIPES'
+    type: 'FETCHING_RECIPES',
+    selectedIngredients
   }
 }
 
@@ -52,7 +67,7 @@ export function getDataFailure() {
 
 export function fetchData(selectedIngredients) {
   return (dispatch) => {
-    dispatch(getData())
+    dispatch(getData(selectedIngredients))
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
       method: "POST",
       body: JSON.stringify(selectedIngredients),

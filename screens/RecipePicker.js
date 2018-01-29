@@ -17,6 +17,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TextInput,
+  ActivityIndicator
 } from 'react-native';
 
 import { fetchData } from '../actions/Actions';
@@ -42,6 +43,8 @@ class RecipePicker extends React.Component {
     }
   }
 
+  // adds a listener for the keyboard to close the
+  // search bar when the user doesn't hit return
   componentWillMount() {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
@@ -107,28 +110,35 @@ class RecipePicker extends React.Component {
     }
   }
 
+  // searches the recipes for something matching
+  // the user input
   _searchForRecipe = (input) => {
     this.props.searchForRecipe(input)
   }
 
+  // sorts the found recipes according to
+  // number of missing ingredients
   _sortByMissing = () => {
     this.props.sortRecipesByMissing();
     this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
     this._drawer.close();
   }
 
+  // sorts the found recipes by name
   _sortAlphabetically = () => {
     this.props.sortRecipesByName();
     this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
     this._drawer.close();
   }
 
+  // sorts the recipes by rating
   _sortByRating = () => {
     this.props.sortRecipesByRating();
     this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
     this._drawer.close();
   }
 
+  // sorts the recipes by source
   _sortBySource = () => {
     this.props.sortRecipesBySource();
     this.state.reRenderList == false ? this.setState({reRenderList:true}): this.setState({reRenderList:false});
@@ -167,7 +177,10 @@ class RecipePicker extends React.Component {
             rightIcon="ios-search"
             rightAction={this._rightAction} />
           {
-            this.props.recipesIsFetching && <Text style={{backgroundColor:'transparent', color:'white', fontFamily:'comfortaaBold'}}>Loading...</Text>
+            this.props.recipesIsFetching &&
+              <View style={styles.textContainer}>
+                <ActivityIndicator size="large" color="#d03d67" />
+              </View>
           }
           {
             !this.props.recipesFetched &&

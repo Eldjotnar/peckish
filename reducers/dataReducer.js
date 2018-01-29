@@ -8,6 +8,8 @@ const initState = {
   error: false,
   backupIngredients: [],
   backupRecipes: [],
+  selectedIngredients: [],
+  groceryList: [],
 }
 
 const RecipeReducer = (state = initState, action) => {
@@ -16,7 +18,8 @@ const RecipeReducer = (state = initState, action) => {
       return {
         ...state,
         recipes: [],
-        recipesIsFetching: true
+        recipesIsFetching: true,
+        selectedIngredients: [...state.selectedIngredients, action.selectedIngredients]
       }
     case 'FETCHING_RECIPES_SUCCESS':
       return {
@@ -77,8 +80,6 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'SORT_RECIPES_BY_NAME':
       var alphabetState = []
-      console.log("sorted by name:")
-      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
       alphabetState.push(state.backupRecipes[0].sort(function(a,b){return a.rname > b.rname}));
       return {
         ...state,
@@ -86,8 +87,6 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'SORT_RECIPES_BY_RATING':
       var ratingState = []
-      console.log("sorted by rating:")
-      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
       ratingState.push(state.backupRecipes[0].sort(function(a,b){return a.rating > b.rating}));
       return {
         ...state,
@@ -95,8 +94,6 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'SORT_RECIPES_BY_SOURCE':
       var sourceState = []
-      console.log("sorted by source:")
-      state.backupRecipes[0].forEach(function(entry){console.log(entry.rname)});
       sourceState.push(state.backupRecipes[0].sort(function(a,b){return a.source > b.source}));
       return {
         ...state,
@@ -115,6 +112,25 @@ const RecipeReducer = (state = initState, action) => {
       return {
         ...state,
         recipes: searchedRecipes,
+      }
+    case 'ADD_TO_GROCERY_LIST_FROM_RECIPE':
+      var myList = []
+      for (var i = 0; i < action.data.length; i++) {
+        if(!state.selectedIngredients[0].ingredients.includes(action.data[i].key)){
+          if(!["pepper", "water", "salt"].some(el => action.data[i].key.includes(el))){
+            //TODO: revoke multiple instances
+            myList.push(action.data[i])
+          }
+        }
+      }
+      return {
+        ...state,
+        groceryList: myList
+      }
+    case 'ADD_CUSTOM_TO_GROCERY_LIST':
+      return {
+        ...state,
+        groceryList: [...state.groceryList, action.data]
       }
     default:
       return state;

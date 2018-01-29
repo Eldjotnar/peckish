@@ -44,7 +44,7 @@ export default class Test extends React.Component {
     if(barcodeInProcess === false){
       barcodeInProcess = true
       console.log(`Barcode read of type ${type} and data content: ${data} scanned.`)
-      if(type === "EAN_13" || type === "CODE_128"){
+      if(type === "EAN_13" || type === 'org.gs1.EAN-13' || type === "CODE_128" || type === 'org.gs1.CODE_128'){
         fetch(`https://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=${data}&facet=gpc_s_nm&facet=brand_nm&facet=owner_nm`)
         .then((res) => {
           return res.json()
@@ -100,14 +100,6 @@ export default class Test extends React.Component {
       body: JSON.stringify({type:"lookupproduct", "lookupproduct": `${this.state.productName}`}),
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((err) => console.log('ERROR: ' + err))
-  }
 
   _handleNoToProduct(){
     //Scan again or manually input product
