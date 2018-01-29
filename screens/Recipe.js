@@ -51,8 +51,12 @@ class Recipe extends React.Component {
   }
 
   _addToGroceryList = () => {
-    //console.log(this.formatIngredients())
-    this.props.addToGroceryList(this.formatIngredients())
+    myArray = [];
+    myLength = this.getNavigationParams().ingredients.ingredientnames.length;
+    for(i = 0; i < myLength; i++) {
+      myArray.push({key: this.getNavigationParams().ingredients.ingredientnames[i], amount: this.getNavigationParams().ingredients.amounts[i]})
+    }
+    this.props.addToGroceryList(myArray)
   }
 
   render(){

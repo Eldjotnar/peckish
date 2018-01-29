@@ -38,9 +38,10 @@ export function fetchIngredients() {
   }
 }
 
-export function getData() {
+export function getData(selectedIngredients) {
   return {
-    type: 'FETCHING_RECIPES'
+    type: 'FETCHING_RECIPES',
+    selectedIngredients
   }
 }
 
@@ -59,7 +60,7 @@ export function getDataFailure() {
 
 export function fetchData(selectedIngredients) {
   return (dispatch) => {
-    dispatch(getData())
+    dispatch(getData(selectedIngredients))
     fetch("http://rns203-8.cs.stolaf.edu:28488", {
       method: "POST",
       body: JSON.stringify(selectedIngredients),

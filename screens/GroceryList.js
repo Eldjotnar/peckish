@@ -16,7 +16,7 @@ import {
 import { TopBar } from '../components/TopBar';
 import { GroceryListItem } from '../components/GroceryListItem';
 
-export default class GroceryList extends React.Component {
+class GroceryList extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -52,7 +52,7 @@ export default class GroceryList extends React.Component {
           rightIcon="ios-search"
           rightAction={() => console.log(this.state.data)} />
         <FlatList
-          data={this.state.data}
+          data={this.props.groceryList}
           renderItem={this._renderItem}
         />
       </View>
@@ -97,3 +97,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
   }
 });
+
+function mapStateToProps (state) {
+  return {
+    groceryList: state.groceryList
+  }
+}
+
+export default connect(
+  mapStateToProps,
+)(GroceryList);
