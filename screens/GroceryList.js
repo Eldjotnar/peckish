@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import {
   Image,
   Text,

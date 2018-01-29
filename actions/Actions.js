@@ -17,6 +17,13 @@ export function getIngredientsFailure(data) {
   }
 }
 
+export function addToGroceryList(data) {
+  return {
+    type: 'ADD_TO_GROCERY_LIST',
+    data
+  }
+}
+
 export function fetchIngredients() {
   return (dispatch) => {
     dispatch(getIngredients())

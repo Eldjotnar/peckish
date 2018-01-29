@@ -8,6 +8,8 @@ const initState = {
   error: false,
   backupIngredients: [],
   backupRecipes: [],
+  selectedIngredients: [],
+  groceryList: [],
 }
 
 const RecipeReducer = (state = initState, action) => {
@@ -40,16 +42,18 @@ const RecipeReducer = (state = initState, action) => {
       }
     case 'FETCHING_INGREDIENTS_SUCCESS':
       var myArray = []
+      var selected= []
       for (var i = 0; i < action.data.ingredientnames.length; i++) {
         myArray.push({key: action.data.ingredientnames[i]})
+        selected.push(action.data.ingredientnames[i])
       }
-      console.log("server got: " + myArray)
       return {
         ...state,
         ingredientsIsFetching: true,
         ingredientsFetched: true,
         ingredients: [...state.ingredients, myArray],
         backupIngredients: [...state.backupIngredients, myArray],
+        selectedIngredients: [...state.selectedIngredients, selected]
       }
     case 'FETCHING_INGREDIENTS_FAILURE':
       return {
@@ -110,6 +114,19 @@ const RecipeReducer = (state = initState, action) => {
       return {
         ...state,
         recipes: searchedRecipes,
+      }
+    case 'ADD_TO_GROCERY_LIST':
+      console.log("reducer" + action.data)
+      var myList = []
+      //TODO: probably print selectedIngredients to make sure it actually has items
+      for (var i = 0; i < action.data.length; i++) {
+        if(!state.selectedIngredients.includes(action.data.key)){
+          myList.push(action.data)
+        }
+      }
+      return {
+        ...state,
+        groceryList: [...state.groceryList, myList]
       }
     default:
       return state;
