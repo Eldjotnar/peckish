@@ -46,6 +46,7 @@ export function fetchIngredients() {
 }
 
 export function getData(selectedIngredients) {
+  console.log("fetching recipes...")
   return {
     type: 'FETCHING_RECIPES',
     selectedIngredients
