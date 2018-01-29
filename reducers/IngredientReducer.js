@@ -2,6 +2,7 @@ const initState = {
   ingredients: [],
   ingredientsFetched: false,
   ingredientsIsFetching: false,
+  backupIngredients: [],
   error: false,
 }
 
@@ -23,6 +24,7 @@ const IngredientReducer = (state = initState, action) => {
         ingredientsIsFetching: true,
         ingredientsFetched: true,
         ingredients: myArray,
+        backupIngredients: myArray
       }
     case 'FETCHING_INGREDIENTS_FAILURE':
       return {
@@ -30,21 +32,26 @@ const IngredientReducer = (state = initState, action) => {
         recipesIsFetching: false,
         error: true,
       }
-      case 'SORT_INGREDIENTS_BY_CATEGORY':
-        return {
-          ...state,
-          ingredients: state.ingredients.sort(function(a,b){return a.type > b.type})
-        }
-      case 'SORT_INGREDIENTS_BY_FREQUENCY':
-        return {
-          ...state,
-          ingredients: state.ingredients.sort(function(a,b){return a.freq < b.freq})
-        }
-      case 'SORT_INGREDIENTS_BY_NAME':
-        return {
-          ...state,
-          ingredients: state.ingredients.sort(function(a,b){return a.key > b.key})
-        }
+    case 'SORT_INGREDIENTS_BY_CATEGORY':
+      return {
+        ...state,
+        ingredients: state.ingredients.sort(function(a,b){return a.type > b.type})
+      }
+    case 'SORT_INGREDIENTS_BY_FREQUENCY':
+      return {
+        ...state,
+        ingredients: state.ingredients.sort(function(a,b){return a.freq < b.freq})
+      }
+    case 'SORT_INGREDIENTS_BY_NAME':
+      return {
+        ...state,
+        ingredients: state.ingredients.sort(function(a,b){return a.key > b.key})
+      }
+    case 'SEARCH_FOR_INGREDIENT':
+      return {
+        ...state,
+        ingredients: state.backupIngredients.filter(s => s.key.toLowerCase().includes(action.input))
+      }
     default:
       return state;
   }

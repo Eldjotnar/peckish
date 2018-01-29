@@ -4,6 +4,7 @@ const initState = {
   recipesIsFetching: false,
   selectedIngredients: [],
   groceryList: [],
+  backupRecipes: [],
   error: false,
 }
 
@@ -17,12 +18,12 @@ const RecipeReducer = (state = initState, action) => {
         selectedIngredients: action.selectedIngredients
       }
     case 'FETCHING_RECIPES_SUCCESS':
-      console.log("FETCHING_RECIPES_SUCCESS")
       return {
         ...state,
         recipesIsFetching: false,
         recipesFetched: true,
-        recipes: action.data
+        recipes: action.data,
+        backupRecipes: action.data
       }
     case 'FETCHING_RECIPES_FAILURE':
       return {
@@ -51,19 +52,15 @@ const RecipeReducer = (state = initState, action) => {
         recipes: state.recipes.sort(function(a,b){return a.missing > b.missing})
       }
     case 'SEARCH_FOR_RECIPE':
-      searchedRecipes = []
-      //searchedRecipes.push(state.backupRecipes[0].filter(s => s.rname.toLowerCase().includes(action.input)))
       return {
         ...state,
-        recipes: searchedRecipes,
+        recipes: state.backupRecipes.filter(s => s.rname.toLowerCase().includes(action.input)),
       }
     case 'ADD_TO_GROCERY_LIST_FROM_RECIPE':
-      console.log(state.selectedIngredients)
       var myList = []
       for (var i = 0; i < action.data.length; i++) {
         if(!state.selectedIngredients.ingredients.includes(action.data[i].key)){
           if(!["pepper", "water", "salt"].some(el => action.data[i].key.includes(el))){
-            //TODO: revoke multiple instances
             myList.push(action.data[i])
           }
         }
@@ -73,7 +70,6 @@ const RecipeReducer = (state = initState, action) => {
         groceryList: myList
       }
     case 'ADD_CUSTOM_TO_GROCERY_LIST':
-      console.log("here: " + action.data)
       return {
         ...state,
         groceryList: [...state.groceryList, action.data]
