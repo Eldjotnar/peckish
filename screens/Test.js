@@ -108,17 +108,18 @@ export default class Test extends React.Component {
               <View style={styles.innerContainer}>
                 <Text style={styles.popupText}>Is this the product</Text>
                 <Text style={styles.popupText}>you scanned?</Text>
-                <TouchableOpacity
-                  onPress={() => this._handleYesToProduct()}
-                >
-                <Ionicons name={this.props.leftIcon} size={30}/>
-                </TouchableOpacity>
-                <Button
-                  style={styles.confirmationButtons}
-                  onPress={() => this._handleNoToProduct()}
-                  title="No"
-                  color="red"
-                ></Button>
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    onPress={() => this._handleYesToProduct()}
+                  >
+                  <Ionicons name="ios-checkmark-circle-outline" size={50} color="white" padding={20}/>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => this._handleNoToProduct()}
+                  >
+                  <Ionicons name="ios-close-circle-outline" size={50} color="#FF00F7"/>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </Modal>
@@ -157,6 +158,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#191e45',
     justifyContent: 'center',
+  },
+  modalButtons: {
+    width:160,
+    flexDirection: 'row',
+    padding:20,
+    justifyContent: 'space-between',
   },
   innerContainer: {
     backgroundColor: '#191e45',
