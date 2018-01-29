@@ -43,6 +43,7 @@ const RecipeReducer = (state = initState, action) => {
       for (var i = 0; i < action.data.ingredientnames.length; i++) {
         myArray.push({key: action.data.ingredientnames[i]})
       }
+      console.log("server got: " + myArray)
       return {
         ...state,
         ingredientsIsFetching: true,

@@ -82,7 +82,7 @@ export default class Recipe extends React.Component {
           <Text style={[styles.subText, {marginTop: 10}]}>Instructions</Text>
           <Text style={[styles.regularText, {marginTop: 10}]}>{this.formatRecipe()}</Text>
           <View style={{height:20}}></View>
-          <Text style={styles.regularText}>{this.getNavigationParams().url}</Text>
+          <Text style={[styles.regularText, {paddingBottom:50}]}>{this.getNavigationParams().url}</Text>
         </ScrollView>
         </View>
       </View>
