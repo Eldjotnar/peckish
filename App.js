@@ -12,12 +12,10 @@ import Test from './screens/Test';
 import RecipePicker from './screens/RecipePicker';
 import Recipe from './screens/Recipe';
 import Settings from './screens/Settings';
+import GroceryList from './screens/GroceryList';
 
 import Reducer from './reducers/dataReducer';
 import Actions from './actions/Actions';
-
-var initObtainedRecipes=[];
-obtainedRecipes = initObtainedRecipes
 
 const stackNavi = StackNavigator({
   RecipePicker: { screen: RecipePicker },
@@ -55,6 +53,18 @@ const Tabs = TabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <Ionicons
           name='ios-barcode-outline'
+          style={{ color: tintColor }}
+          size={Platform.OS === 'ios' ? 40 : 26}
+        />
+      ),
+    },
+  },
+  GroceryList: {
+    screen: GroceryList,
+    navigationOptions: {
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons
+          name='ios-cart-outline'
           style={{ color: tintColor }}
           size={Platform.OS === 'ios' ? 40 : 26}
         />
