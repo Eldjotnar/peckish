@@ -98,7 +98,7 @@ class GroceryList extends React.Component {
           rightIcon="ios-search"
           rightAction={() => console.log(this.state.data)} />
         <FlatList
-          data={this.props.groceryList}
+          data={this.props.groceries.groceryList}
           renderItem={this._renderItem}
         />
       </View>
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    groceryList: state.groceryList
+    groceries: state.groceries
   }
 }
 

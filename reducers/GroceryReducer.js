@@ -19,6 +19,7 @@ const GroceryReducer = (state = initState, action) => {
         groceryList: myList
       }
     case 'ADD_CUSTOM_TO_GROCERY_LIST':
+      console.log("here: " + action.data)
       return {
         ...state,
         groceryList: [...state.groceryList, action.data]
