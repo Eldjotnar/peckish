@@ -100,6 +100,14 @@ export default class Test extends React.Component {
       body: JSON.stringify({type:"lookupproduct", "lookupproduct": `${this.state.productName}`}),
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
     })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      console.log(data)
+    })
+    .catch((err) => console.log('ERROR: ' + err))
+  }
 
   _handleNoToProduct(){
     //Scan again or manually input product
