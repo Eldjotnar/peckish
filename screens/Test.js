@@ -7,11 +7,12 @@ import {
   Button,
   View,
   StatusBar,
-  Modal
+  Modal,
+  TouchableOpacity
 } from 'react-native';
 
 import {BarCodeScanner, Permissions} from 'expo'
-// import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 let barcodeInProcess = false
 
@@ -107,12 +108,11 @@ export default class Test extends React.Component {
               <View style={styles.innerContainer}>
                 <Text style={styles.popupText}>Is this the product</Text>
                 <Text style={styles.popupText}>you scanned?</Text>
-                <Button
-                  style={styles.confirmationButtons}
+                <TouchableOpacity
                   onPress={() => this._handleYesToProduct()}
-                  title="Yes"
-                  color="green"
-                ></Button>
+                >
+                <Ionicons name={this.props.leftIcon} size={30}/>
+                </TouchableOpacity>
                 <Button
                   style={styles.confirmationButtons}
                   onPress={() => this._handleNoToProduct()}
