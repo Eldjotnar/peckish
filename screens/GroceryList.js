@@ -58,6 +58,10 @@ class GroceryList extends React.Component {
     this.setState({customAmount: input})
   }
 
+  _setVisibility = () => {
+    this.setState({openModal: false})
+  }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
@@ -69,6 +73,7 @@ class GroceryList extends React.Component {
         <Modal
           visible={this.state.openModal}
           animationType={'slide'}
+          onRequestClose={() => this._setVisibility()}
           onShow={() => this.refs.searchBar.focus()} >
           <View style={styles.modalStyle}>
             <TopBar title="Add item to grocery list"/>
