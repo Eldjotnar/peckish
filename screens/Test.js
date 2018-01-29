@@ -11,6 +11,8 @@ import {
 
 import {BarCodeScanner, Permissions} from 'expo'
 
+let barcodeInProcess = false
+
 export default class Test extends React.Component {
   constructor(props){
     super(props);
@@ -27,20 +29,31 @@ export default class Test extends React.Component {
     this.setState({cameraPermission: status === 'granted'})
   }
 
+  _helperForHandleBarCode(){
+    barcodeInProcess = false
+  }
+
   _handleBarCode = ({type, data}) => {
-    console.log(`Barcode read of type ${type} and data content: ${data} scanned.`)
-    if(type === "EAN_13"){
-      // The data retrieved from the link below is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/
-      fetch(`https://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=${data}&facet=gpc_s_nm&facet=brand_nm&facet=owner_nm`)
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => {
-        console.log(data)
-      })
+    if(barcodeInProcess === false){
+      barcodeInProcess = true
+      console.log(`Barcode read of type ${type} and data content: ${data} scanned.`)
+      if(type === "EAN_13"){
+        // The data retrieved from the link below is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/. Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/
+        fetch(`https://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=${data}&facet=gpc_s_nm&facet=brand_nm&facet=owner_nm`)
+        .then((res) => {
+          return res.json()
+        })
+        .then((data) => {
+          console.log(data)
+        })
+      }
+      else {
+        console.log("Not an EAN_13 barcode. However, the barcode reading was succesful.")
+      }
+      setTimeout(this._helperForHandleBarCode, 5000) //enforces 5 second breaks between repeated requests
     }
     else {
-      console.log("Not an EAN_13 barcode. However, the barcode reading was succesful.")
+      console.log("Please wait. One barcode is currently being procesesed.")
     }
   }
 
