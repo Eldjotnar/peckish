@@ -18,7 +18,7 @@ import {
 
 import { TopBar } from '../components/TopBar';
 import { GroceryListItem } from '../components/GroceryListItem';
-import { addCustomToGroceryList } from '../actions/Actions';
+import { addCustomToGroceryList } from '../actions/GroceryActions';
 var {width, height} = Dimensions.get('window');
 
 class GroceryList extends React.Component {
@@ -58,6 +58,10 @@ class GroceryList extends React.Component {
     this.setState({customAmount: input})
   }
 
+  _setVisibility = () => {
+    this.setState({openModal: false})
+  }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
@@ -69,6 +73,7 @@ class GroceryList extends React.Component {
         <Modal
           visible={this.state.openModal}
           animationType={'slide'}
+          onRequestClose={() => this._setVisibility()}
           onShow={() => this.refs.searchBar.focus()} >
           <View style={styles.modalStyle}>
             <TopBar title="Add item to grocery list"/>
@@ -98,7 +103,7 @@ class GroceryList extends React.Component {
           rightIcon="ios-search"
           rightAction={() => console.log(this.state.data)} />
         <FlatList
-          data={this.props.groceryList}
+          data={this.props.groceries.groceryList}
           renderItem={this._renderItem}
         />
       </View>
@@ -169,7 +174,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (state) {
   return {
-    groceryList: state.groceryList
+    groceries: state.recipes
   }
 }
 

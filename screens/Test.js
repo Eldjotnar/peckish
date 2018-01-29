@@ -102,6 +102,7 @@ export default class Test extends React.Component {
     });
   }
 
+
   _handleNoToProduct(){
     //Scan again or manually input product
     this._closeModal()

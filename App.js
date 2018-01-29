@@ -14,8 +14,7 @@ import Recipe from './screens/Recipe';
 import Settings from './screens/Settings';
 import GroceryList from './screens/GroceryList';
 
-import Reducer from './reducers/dataReducer';
-import Actions from './actions/Actions';
+import Reducer from './reducers/RootReducer';
 
 const stackNavi = StackNavigator({
   RecipePicker: { screen: RecipePicker },
@@ -125,6 +124,7 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this._loadAssetsAsync();
+    console.log(this.store.getState())
   }
 
   render() {
