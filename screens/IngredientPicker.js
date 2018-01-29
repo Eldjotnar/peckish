@@ -30,7 +30,7 @@ import {
   sortIngredientsByCategory,
   sortIngredientsByFrequency,
   searchForIngredient,
-} from '../actions/sortActions';
+} from '../actions/IngredientActions';
 
 var {width, height} = Dimensions.get('window');
 var numSelected = 0; //number of ingredients the user selected
@@ -111,7 +111,7 @@ class IngredientPicker extends React.Component {
   // recipes based on the selected ingredients
   _getRecipes = () => {
     const { navigate } = this.props.navigation;
-    this.props.fetchData(selectedIngredients);
+    this.props.fetchRecipes(selectedIngredients);
     navigate(
       'RecipePicker', {
         numIngredients: numSelected,
@@ -291,7 +291,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     fetchIngredients: () => dispatch(fetchIngredients()),
-    fetchData: (selectedIngredients) => dispatch(fetchData(selectedIngredients)),
+    fetchRecipes: (selectedIngredients) => dispatch(fetchRecipes(selectedIngredients)),
     sortIngredientsByName: () => dispatch(sortIngredientsByName()),
     sortIngredientsByCategory: () => dispatch(sortIngredientsByCategory()),
     sortIngredientsByFrequency: () => dispatch(sortIngredientsByFrequency()),

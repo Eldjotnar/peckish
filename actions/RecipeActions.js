@@ -35,3 +35,34 @@ export function fetchRecipes(selectedIngredients) {
       .catch((err) => console.log('ERROR: ' + err))
   }
 }
+
+export function sortRecipesByMissing() {
+  return {
+    type: 'SORT_RECIPES_BY_MISSING'
+  }
+}
+
+export function sortRecipesByName() {
+  return {
+    type: 'SORT_RECIPES_BY_NAME'
+  }
+}
+
+export function sortRecipesByRating() {
+  return {
+    type: 'SORT_RECIPES_BY_RATING'
+  }
+}
+
+export function sortRecipesBySource() {
+  return {
+    type: 'SORT_RECIPES_BY_SOURCE'
+  }
+}
+
+export function searchForRecipe(input) {
+  return {
+    type: 'SEARCH_FOR_RECIPE',
+    input
+  }
+}

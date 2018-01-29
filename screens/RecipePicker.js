@@ -27,7 +27,7 @@ import {
   sortRecipesByRating,
   sortRecipesBySource,
   sortRecipesByMissing,
-} from '../actions/sortActions';
+} from '../actions/RecipeActions';
 
 import { TopBar } from '../components/TopBar';
 import { RecipeCard } from '../components/RecipeCard';
