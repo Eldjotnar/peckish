@@ -31,11 +31,13 @@ export default class Settings extends React.Component {
     header: null
   }
 
+  // opens the user registration modal
   _openModal = () => {
     console.log("pressed");
     this.setState({register: true});
   }
 
+  // closes the user registration modal
   _closeModal = () => {
     this.setState({register: false});
   }

@@ -31,35 +31,42 @@ class GroceryList extends React.Component {
     }
   }
 
+  // removes default navigation header
   static navigationOptions = {
     header: null
   }
 
+  // renders a grocery item card
   _renderItem = ({item}) => (
     <GroceryListItem
       text={item.key}
       amount={item.amount} />
   );
 
+  // opens up the add ingredient modal
   _leftAction = () => {
     this.setState({openModal: true})
   }
 
+  // creates an object based on the state variables and
+  // adds it to the grocery list
   _submitItem = () => {
     this.setState({openModal: false})
     this.props.addCustomToGroceryList({key: this.state.customItem, amount: this.state.customAmount});
   }
 
+  // takes the text input argument and assigns it
+  // to a state variable so that it can be pushed
+  // to the grocery list
   _addCustomItem = (input) => {
     this.setState({customItem: input})
   }
 
+  // takes the text input argument and assigns it
+  // to a state variable so that it can be pushed
+  // to the grocery list
   _addCustomAmount = (input) => {
     this.setState({customAmount: input})
-  }
-
-  _setVisibility = () => {
-    this.setState({openModal: false})
   }
 
   render(){
@@ -73,7 +80,6 @@ class GroceryList extends React.Component {
         <Modal
           visible={this.state.openModal}
           animationType={'slide'}
-          onRequestClose={() => this._setVisibility()}
           onShow={() => this.refs.searchBar.focus()} >
           <View style={styles.modalStyle}>
             <TopBar title="Add item to grocery list"/>

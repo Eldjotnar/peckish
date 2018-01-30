@@ -16,11 +16,13 @@ import GroceryList from './screens/GroceryList';
 
 import Reducer from './reducers/RootReducer';
 
+// create a stack navigator for the individual recipes
 const stackNavi = StackNavigator({
   RecipePicker: { screen: RecipePicker },
   Recipe: { screen: Recipe },
 })
 
+// create a tab navigator as the primary navigation
 const Tabs = TabNavigator({
   IngredientPicker: {
     screen: IngredientPicker,
@@ -113,6 +115,8 @@ export default class App extends React.Component {
       loaded: false,
     }
   }
+
+  // load the fonts required by the app
   _loadAssetsAsync = async () => {
     await Font.loadAsync({
       multicolore: require('./assets/fonts/Multicolore.otf'),
@@ -124,7 +128,6 @@ export default class App extends React.Component {
 
   componentWillMount() {
     this._loadAssetsAsync();
-    console.log(this.store.getState())
   }
 
   render() {
