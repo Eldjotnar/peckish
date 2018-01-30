@@ -18,6 +18,7 @@ const RecipeReducer = (state = initState, action) => {
         selectedIngredients: action.selectedIngredients
       }
     case 'FETCHING_RECIPES_SUCCESS':
+      console.log('fetching recipes success')
       return {
         ...state,
         recipesIsFetching: false,
