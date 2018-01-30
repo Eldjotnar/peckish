@@ -16,13 +16,17 @@ import {
   Modal,
 } from 'react-native';
 
+import Expo from 'expo';
+
 var {width, height} = Dimensions.get('window');
+let userAccessToken;
 
 export default class Settings extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       register: false,
+      userAccessToken: "",
     }
   }
 
@@ -40,6 +44,32 @@ export default class Settings extends React.Component {
     this.setState({register: false});
   }
 
+  async getUserInfo(){
+    let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', { headers: {Authorization: `Bearer ${userAccessToken}`}})
+    console.log(userInfoResponse)
+    return userInfoResponse
+  }
+
+  async signInWithGoogle() {
+    try{
+      const result = await Expo.Google.logInAsync({
+        androidClientId: "943728664102-9kprt8e9sikpbda08rkhb2argqifufkj.apps.googleusercontent.com",
+        iosClientId: "943728664102-mjjul8u0nakm61bdj7e8gjbtoojk9ldq.apps.googleusercontent.com",
+        scopes:['profile']
+      })
+
+      if(result.type === 'success'){
+        this.setState({userAccessToken: result.accessToken})
+        this._openModal()
+        return result.accessToken
+      } else{
+        return {cancelled: true}
+      }
+    } catch(err) {
+      return {error: true}
+    }
+  }
+
   render(){
     const { navigate } = this.props.navigation;
     return (
@@ -47,8 +77,9 @@ export default class Settings extends React.Component {
         <Modal
           visible={this.state.register}
           animationType={'slide'}
-          onRequestClose={() => this.closeModal()}>
-          <Text>Inside the modal</Text>
+          onRequestClose={() => this._closeModal()}>
+          <Text>Your full name from Google is: </Text>
+          <Text>{this.getUserInfo().name}</Text>
         </Modal>
         <StatusBar
           barStyle="light-content"
@@ -60,23 +91,13 @@ export default class Settings extends React.Component {
           <View>
             <Text style={styles.texter}>Please log in</Text>
           </View>
-          <View style={styles.inputContainer}>
-            <Ionicons style={styles.iconStyle} name="ios-mail-outline" size={30}/>
-            <TextInput style={styles.input} keyboardType='email-address'/>
-          </View>
-          <View style={styles.inputContainer}>
-            <Ionicons style={styles.iconStyle} name="ios-lock-outline" size={30}/>
-            <TextInput style={styles.input} secureTextEntry={true} />
-          </View>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => this.signInWithGoogle()}
+          >
             <View style={[styles.inputContainer, styles.loginButton]}>
-              <Text style={styles.normalText}>Log in</Text>
+              <Text style={styles.normalText}>Google Log in</Text>
             </View>
           </TouchableWithoutFeedback>
-          <View style={{alignItems: 'center'}}>
-            <Text style={styles.subText}>Don't have an account?</Text>
-            <Text onPress={this._openModal} style={[styles.subText, {textDecorationLine:'underline', marginTop:10}]}> Create one!</Text>
-          </View>
         </KeyboardAvoidingView>
       </View>
     );
