@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 import {
   Image,
   Text,
@@ -14,8 +15,11 @@ import {
 } from 'react-native';
 
 let recipeIngredients = {}
+import { fetchRecipes } from '../actions/RecipeActions';
+import { fetchIngredients } from '../actions/IngredientActions';
+import { addToGroceryList } from '../actions/GroceryActions';
 
-export default class Recipe extends React.Component {
+class Recipe extends React.Component {
   constructor(props){
     super(props);
   }
@@ -46,6 +50,15 @@ export default class Recipe extends React.Component {
       steps = steps.slice(12)
     }
     return steps
+  }
+
+  _addToGroceryList = () => {
+    myArray = [];
+    myLength = this.getNavigationParams().ingredients.ingredientnames.length;
+    for(i = 0; i < myLength; i++) {
+      myArray.push({key: this.getNavigationParams().ingredients.ingredientnames[i], amount: this.getNavigationParams().ingredients.amounts[i]})
+    }
+    this.props.addToGroceryList(myArray)
   }
 
   render(){
@@ -79,11 +92,16 @@ export default class Recipe extends React.Component {
               renderItem={({item}) => <Text style={styles.listText}>{item.amount} {item.key}</Text>}
               scrollEnabled={false}
             />
-          <Text style={[styles.subText, {marginTop: 10}]}>Instructions</Text>
-          <Text style={[styles.regularText, {marginTop: 10}]}>{this.formatRecipe()}</Text>
-          <View style={{height:20}}></View>
-          <Text style={styles.regularText}>{this.getNavigationParams().url}</Text>
-        </ScrollView>
+            <Text style={[styles.subText, {marginTop: 10}]}>Instructions</Text>
+            <Text style={[styles.regularText, {marginTop: 10}]}>{this.formatRecipe()}</Text>
+            <View style={{height:20}}></View>
+            <Text style={styles.regularText}>{this.getNavigationParams().url}</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={this._addToGroceryList}>
+                <Text style={styles.buttonStyle}>Add Missing Ingredients to Grocery List</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
     );
@@ -151,5 +169,32 @@ const styles = StyleSheet.create({
     fontFamily: 'comfortaaBold',
     fontSize: 14,
     marginBottom: 5,
+  },
+  buttonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    backgroundColor: '#d03d67',
+    marginVertical: 50,
+    borderRadius: 5,
+  },
+  buttonStyle: {
+    fontFamily: 'multicolore',
+    color: 'white',
   }
 });
+
+function mapStateToProps (state) {
+  return {}
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    addToGroceryList: (data) => dispatch(addToGroceryList(data)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Recipe);

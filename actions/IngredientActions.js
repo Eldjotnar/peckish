@@ -31,39 +31,27 @@ export function fetchIngredients() {
   }
 }
 
-export function getData() {
+export function sortIngredientsByName() {
   return {
-    type: 'FETCHING_RECIPES'
+    type: 'SORT_INGREDIENTS_BY_NAME'
   }
 }
 
-export function getDataSuccess(data) {
+export function sortIngredientsByCategory() {
   return {
-    type: 'FETCHING_RECIPES_SUCCESS',
-    data
+    type: 'SORT_INGREDIENTS_BY_CATEGORY'
   }
 }
 
-export function getDataFailure() {
+export function sortIngredientsByFrequency() {
   return {
-    type: 'FETCHING_RECIPES_FAILURE'
+    type: 'SORT_INGREDIENTS_BY_FREQUENCY'
   }
 }
 
-export function fetchData(selectedIngredients) {
-  return (dispatch) => {
-    dispatch(getData())
-    fetch("http://rns203-8.cs.stolaf.edu:28488", {
-      method: "POST",
-      body: JSON.stringify(selectedIngredients),
-      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
-    })
-      .then((res) => {
-        return res.json()
-      })
-      .then((data) => {
-        dispatch(getDataSuccess(data));
-      })
-      .catch((err) => console.log('ERROR: ' + err))
+export function searchForIngredient(input) {
+  return {
+    type: 'SEARCH_FOR_INGREDIENT',
+    input
   }
 }
