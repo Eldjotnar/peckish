@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontFamily: 'comfortaa',
     marginTop: 20,
+    paddingLeft: 5,
     borderRadius: 5,
     borderWidth:1,
     borderColor: '#191e45'
