@@ -26,25 +26,33 @@ export default class Test extends React.Component {
       lookupMessage: "",
     }
   }
+
+  // removes default navigation header
   static navigationOptions = {
     header: null
   }
 
+  // gets permission to use the camera
   async componentWillMount(){
     const { status } = await Permissions.askAsync(Permissions.CAMERA)
     this.setState({cameraPermission: status === 'granted'})
   }
 
+  // assigns a state variable to
+  // smooth user experience
   _helperForHandleBarCode(){
     barcodeInProcess = false
   }
 
+  // once it has recognized a barcode
+  // it opens up a modal to allow the user to confirm
+  // the added ingredient
   _handleBarCode = ({type, data}) => {
     this._openModal()
     if(barcodeInProcess === false){
       barcodeInProcess = true
       console.log(`Barcode read of type ${type} and data content: ${data} scanned.`)
-      if(type === "EAN_13" || type === 'org.gs1.EAN-13' || type === "CODE_128" || type === 'org.gs1.CODE_128'){
+      if(type === "EAN_13" || type === 'org.gs1.EAN-13' || type === "CODE_128" || type === 'org.iso.Code128'){
         fetch(`https://pod.opendatasoft.com/api/records/1.0/search/?dataset=pod_gtin&q=${data}&facet=gpc_s_nm&facet=brand_nm&facet=owner_nm`)
         .then((res) => {
           return res.json()
@@ -84,14 +92,18 @@ export default class Test extends React.Component {
     }
   }
 
+ // opens up the modal
   _openModal() {
     this.setState({modalVisible: true})
   }
 
+  // close the modal
   _closeModal() {
     this.setState({modalVisible: false})
   }
 
+  // if the user confirms the product compare it
+  // to the list of ingredients in the database
   _handleYesToProduct(){
     //Match up with known ingredients
     this._closeModal()
@@ -110,6 +122,8 @@ export default class Test extends React.Component {
     }
 
 
+  // close the modal if the suggested product
+  // isn't accurate
   _handleNoToProduct(){
     //Scan again or manually input product
     this._closeModal()

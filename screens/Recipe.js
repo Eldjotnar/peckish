@@ -26,14 +26,18 @@ class Recipe extends React.Component {
     super(props);
   }
 
+  // removes the default navigation header
   static navigationOptions = {
     header: null
   }
 
+  // returns the parameters passed to the navigation
   getNavigationParams() {
     return this.props.navigation.state.params || {}
   }
 
+  // formats the ingredients nicely for display
+  // purposes
   formatIngredients() {
     formattedIngredients = []
     arrSize = this.getNavigationParams().ingredients.ingredientnames.length
@@ -46,6 +50,8 @@ class Recipe extends React.Component {
     return formattedIngredients
   }
 
+  // prodcues a set of directions that are more readable
+  // for the user
   formatRecipe() {
     let steps = this.getNavigationParams().steps
     if(steps.substring(0,12) === "Directions: ") {
@@ -54,6 +60,8 @@ class Recipe extends React.Component {
     return steps
   }
 
+  // creates an ingredicents object and pushes it to the
+  // grocery list
   _addToGroceryList = () => {
     myArray = [];
     myLength = this.getNavigationParams().ingredients.ingredientnames.length;
