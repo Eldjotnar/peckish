@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  KeyboardAvoidingView,
+  TextInput,
 } from 'react-native';
 
 let recipeIngredients = {}
@@ -24,14 +26,18 @@ class Recipe extends React.Component {
     super(props);
   }
 
+  // removes the default navigation header
   static navigationOptions = {
     header: null
   }
 
+  // returns the parameters passed to the navigation
   getNavigationParams() {
     return this.props.navigation.state.params || {}
   }
 
+  // formats the ingredients nicely for display
+  // purposes
   formatIngredients() {
     formattedIngredients = []
     arrSize = this.getNavigationParams().ingredients.ingredientnames.length
@@ -44,6 +50,8 @@ class Recipe extends React.Component {
     return formattedIngredients
   }
 
+  // prodcues a set of directions that are more readable
+  // for the user
   formatRecipe() {
     let steps = this.getNavigationParams().steps
     if(steps.substring(0,12) === "Directions: ") {
@@ -52,6 +60,8 @@ class Recipe extends React.Component {
     return steps
   }
 
+  // creates an ingredicents object and pushes it to the
+  // grocery list
   _addToGroceryList = () => {
     myArray = [];
     myLength = this.getNavigationParams().ingredients.ingredientnames.length;
@@ -70,6 +80,7 @@ class Recipe extends React.Component {
           translucent={false}
         />
         <Image source={require('../assets/images/banner.png')} style={styles.backgroundImage} />
+        <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
         <View style={styles.recipeImageContainer}>
           <Image source={{uri: this.getNavigationParams().imageurl}} style={styles.recipeImage} />
             <TouchableOpacity onPress={() => goBack()} style={styles.backArrow}>
@@ -96,6 +107,10 @@ class Recipe extends React.Component {
             <Text style={[styles.regularText, {marginTop: 10}]}>{this.formatRecipe()}</Text>
             <View style={{height:20}}></View>
             <Text style={styles.regularText}>{this.getNavigationParams().url}</Text>
+            <TextInput
+              style={[styles.customNotes, {paddingBottom: 5}]}
+              multiline={true}
+              placeholder='Recipe Notes' />
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={this._addToGroceryList}>
                 <Text style={styles.buttonStyle}>Add Missing Ingredients to Grocery List</Text>
@@ -103,6 +118,7 @@ class Recipe extends React.Component {
             </View>
           </ScrollView>
         </View>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -176,11 +192,22 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#d03d67',
     marginVertical: 50,
+    marginTop: 20,
     borderRadius: 5,
   },
   buttonStyle: {
     fontFamily: 'multicolore',
     color: 'white',
+  },
+  customNotes: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'comfortaa',
+    marginTop: 20,
+    paddingLeft: 5,
+    borderRadius: 5,
+    borderWidth:1,
+    borderColor: '#191e45'
   }
 });
 
